@@ -16,15 +16,15 @@ func NewPC() PC16 {
 	}
 }
 
-func (this *pc) Set(next uint16) {
-	this.counter = next
+func (p *pc) Set(next uint16) {
+	p.counter = next
 }
 
-func (this *pc) Get() uint16 {
-	return this.counter
+func (p *pc) Get() uint16 {
+	return p.counter
 }
 
-func (this *pc) Reset() {
+func (p *pc) Reset() {
 	var initialState uint16 = 0
-	this.Set(initialState)
+	p.Set(initialState)
 }

@@ -15,7 +15,12 @@ const (
 	SIGN      = iota
 )
 
-type status struct {
+type FlagRegister interface {
+	Set(int, bool)
+	Get(int) bool
+}
+
+type flagRegister struct {
 	carry     bool
 	zero      bool
 	interrupt bool
@@ -25,44 +30,48 @@ type status struct {
 	sign      bool
 }
 
-func (this *status) Set(flag int, state bool) {
+func NewFlagRegister() FlagRegister {
+	return &flagRegister{}
+}
+
+func (fr *flagRegister) Set(flag int, state bool) {
 	switch flag {
 	case CARRY:
-		this.carry = state
+		fr.carry = state
 	case ZERO:
-		this.zero = state
+		fr.zero = state
 	case INTERRUPT:
-		this.interrupt = state
+		fr.interrupt = state
 	case DECIMAL:
-		this.decimal = state
+		fr.decimal = state
 	case BREAK:
-		this.brk = state
+		fr.brk = state
 	case OVERFLOW:
-		this.overflow = state
+		fr.overflow = state
 	case SIGN:
-		this.sign = state
+		fr.sign = state
 	}
 	errorMessage := fmt.Sprintf("status register func Set \n %v flag not found", flag)
 	panic(errors.New(errorMessage))
 
 }
 
-func (this *status) Get(flag int) bool {
+func (fr *flagRegister) Get(flag int) bool {
 	switch flag {
 	case CARRY:
-		return this.carry
+		return fr.carry
 	case ZERO:
-		return this.zero
+		return fr.zero
 	case INTERRUPT:
-		return this.interrupt
+		return fr.interrupt
 	case DECIMAL:
-		return this.decimal
+		return fr.decimal
 	case BREAK:
-		return this.brk
+		return fr.brk
 	case OVERFLOW:
-		return this.overflow
+		return fr.overflow
 	case SIGN:
-		return this.sign
+		return fr.sign
 	}
 	errorMessage := fmt.Sprintf("status register func Get \n %v flag not found", flag)
 	panic(errors.New(errorMessage))

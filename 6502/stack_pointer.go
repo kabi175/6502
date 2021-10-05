@@ -16,15 +16,15 @@ func NewSP8() SP8 {
 	}
 }
 
-func (this *sp) Set(next uint8) {
-	this.pointer = next
+func (s *sp) Set(next uint8) {
+	s.pointer = next
 }
 
-func (this *sp) Get() uint8 {
-	return this.pointer
+func (s *sp) Get() uint8 {
+	return s.pointer
 }
 
-func (this *sp) Reset() {
+func (s *sp) Reset() {
 	var initialState uint8 = 0
-	this.Set(initialState)
+	s.Set(initialState)
 }
