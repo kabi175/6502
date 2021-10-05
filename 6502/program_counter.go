@@ -3,6 +3,7 @@ package cpu6502
 type PC16 interface {
 	Set(uint16)
 	Get() uint16
+	Increment()
 	Reset()
 }
 
@@ -27,4 +28,9 @@ func (p *pc) Get() uint16 {
 func (p *pc) Reset() {
 	var initialState uint16 = 0
 	p.Set(initialState)
+}
+
+func (p *pc) Increment() {
+	nextState := p.Get()
+	p.Set(nextState)
 }
