@@ -16,9 +16,3 @@ type PC16 interface {
 	Increment()
 	Reset()
 }
-
-type Instruction struct {
-	Cycle uint8
-	Mode  func(*cpu6502) uint8
-	Ins   func(*cpu6502) uint8
-}
