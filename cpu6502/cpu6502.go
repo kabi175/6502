@@ -2,6 +2,7 @@ package cpu6502
 
 type cpu6502 struct {
 	operand uint8
+	addr    uint16
 	Opcodes map[uint16]Instruction
 	PC      PC16
 	SP      SP8
@@ -24,7 +25,7 @@ func New(bus Bus16) *cpu6502 {
 	}
 }
 
-//	check chan for new message or chan close
+// Helper function to check the channel for new message or chan close
 func isClosed(close chan bool) bool {
 	select {
 	case <-close:
@@ -47,9 +48,7 @@ func (c *cpu6502) Execute(close chan bool) {
 	for !isClosed(close) {
 		opcode := c.fetch()
 		ins := c.Opcodes[uint16(opcode)]
-		cycle := ins.Cycle
-		cycle += ins.Mode(c)
-		cycle += ins.Ins(c)
+		ins.Execute(c)
 	}
 }
 
