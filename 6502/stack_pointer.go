@@ -3,6 +3,8 @@ package cpu6502
 type SP8 interface {
 	Set(uint8)
 	Get() uint8
+	Increment()
+	Decrement()
 	Reset()
 }
 
@@ -27,4 +29,12 @@ func (s *sp) Get() uint8 {
 func (s *sp) Reset() {
 	var initialState uint8 = 0
 	s.Set(initialState)
+}
+
+func (s *sp) Increment() {
+	s.Set(s.pointer + 1)
+}
+
+func (s *sp) Decrement() {
+	s.Set(s.pointer - 1)
 }

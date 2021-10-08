@@ -1,12 +1,5 @@
 package cpu6502
 
-type PC16 interface {
-	Set(uint16)
-	Get() uint16
-	Increment()
-	Reset()
-}
-
 type pc struct {
 	counter uint16
 }

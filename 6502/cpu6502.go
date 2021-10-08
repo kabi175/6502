@@ -14,7 +14,7 @@ type cpu6502 struct {
 //	Constructor function to create CPU6502
 func New(bus Bus16) *cpu6502 {
 	return &cpu6502{
-		Opcodes: load(),
+		Opcodes: loadInstructionSet(),
 		PC:      NewPC(),
 		SP:      NewSP8(),
 		A:       NewGP8(),
