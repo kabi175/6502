@@ -18,6 +18,7 @@ const (
 type FlagRegister interface {
 	Set(int, bool)
 	Get(int) bool
+	Reset()
 }
 
 type flagRegister struct {
@@ -75,4 +76,14 @@ func (fr *flagRegister) Get(flag int) bool {
 	}
 	errorMessage := fmt.Sprintf("status register func Get \n %v flag not found", flag)
 	panic(errors.New(errorMessage))
+}
+
+func (fr *flagRegister) Reset() {
+	fr.carry = false
+	fr.interrupt = false
+	fr.decimal = false
+	fr.zero = false
+	fr.brk = false
+	fr.overflow = false
+	fr.sign = false
 }
