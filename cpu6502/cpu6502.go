@@ -3,7 +3,7 @@ package cpu6502
 type Cpu6502 struct {
 	Operand uint8
 	Addr    uint16
-	Opcodes map[uint16]Instruction
+	Opcodes map[uint16]Opcode
 	PC      PC16
 	SP      SP8
 	Flag    FlagRegister
@@ -14,9 +14,9 @@ type Cpu6502 struct {
 }
 
 //	Constructor function to create CPU6502
-func New(bus Bus16) *Cpu6502 {
+func New(bus Bus16, opcodes map[uint16]Opcode) *Cpu6502 {
 	return &Cpu6502{
-		Opcodes: loadInstructionSet(),
+		Opcodes: opcodes,
 		PC:      NewPC(),
 		SP:      NewSP8(),
 		Flag:    NewFlagRegister(),
@@ -50,8 +50,7 @@ func (c *Cpu6502) Execute(close chan bool) {
 	c.Reset()
 	for !isClosed(close) {
 		opcode := c.Fetch()
-		ins := c.Opcodes[uint16(opcode)]
-		ins.Execute(c)
+		c.Opcodes[uint16(opcode)].Execute(c)
 	}
 }
 

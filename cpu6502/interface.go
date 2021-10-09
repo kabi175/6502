@@ -16,3 +16,7 @@ type PC16 interface {
 	Increment()
 	Reset()
 }
+
+type Opcode interface {
+	Execute(*Cpu6502) uint8
+}
