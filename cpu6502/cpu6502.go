@@ -1,11 +1,12 @@
 package cpu6502
 
-type cpu6502 struct {
-	operand uint8
-	addr    uint16
+type Cpu6502 struct {
+	Operand uint8
+	Addr    uint16
 	Opcodes map[uint16]Instruction
 	PC      PC16
 	SP      SP8
+	Flag    FlagRegister
 	A       GP8
 	X       GP8
 	Y       GP8
@@ -13,11 +14,12 @@ type cpu6502 struct {
 }
 
 //	Constructor function to create CPU6502
-func New(bus Bus16) *cpu6502 {
-	return &cpu6502{
+func New(bus Bus16) *Cpu6502 {
+	return &Cpu6502{
 		Opcodes: loadInstructionSet(),
 		PC:      NewPC(),
 		SP:      NewSP8(),
+		Flag:    NewFlagRegister(),
 		A:       NewGP8(),
 		X:       NewGP8(),
 		Y:       NewGP8(),
@@ -44,24 +46,41 @@ func isClosed(close chan bool) bool {
  -> Execute the instruction func with operand
  -> Track no.of cycles that took for execution
 */
-func (c *cpu6502) Execute(close chan bool) {
+func (c *Cpu6502) Execute(close chan bool) {
+	c.Reset()
 	for !isClosed(close) {
-		opcode := c.fetch()
+		opcode := c.Fetch()
 		ins := c.Opcodes[uint16(opcode)]
 		ins.Execute(c)
 	}
 }
 
-func (c *cpu6502) read(add uint16) uint8 {
+func (c *Cpu6502) Read(add uint16) uint8 {
 	return c.Bus.Read(add)
 }
 
-func (c *cpu6502) write(add uint16, data uint8) {
+func (c *Cpu6502) Write(add uint16, data uint8) {
 	c.Bus.Write(add, data)
 }
 
-func (c *cpu6502) fetch() uint8 {
-	data := c.read(c.PC.Get())
+func (c *Cpu6502) Fetch() uint8 {
+	data := c.Read(c.PC.Get())
 	c.PC.Increment()
 	return data
+}
+
+func (c *Cpu6502) Reset() {
+	// Reset GP registers
+	c.A.Set(0x00)
+	c.X.Set(0x00)
+	c.Y.Set(0x00)
+
+	// Reset Flags
+	c.Flag.Reset()
+
+	// Reset Program Counter to the
+	low := c.Read(0xFFFC)
+	high := c.Read(0xFFFC + 1)
+	addr := LittleEndianAddr(low, high)
+	c.PC.Set(addr)
 }
