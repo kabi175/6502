@@ -1,12 +1,12 @@
 package opcode
 
-import . "github.com/kabi175/6502/cpu6502"
+import cpu "github.com/kabi175/6502/cpu6502"
 
 /* Accumulator Mode*
 In this mode, instruction operaties on data on accumulator.
 No operations are needed.
 */
-func ACC(c *Cpu6502) uint8 {
+func ACC(c *cpu.Cpu6502) uint8 {
 	// No operations are  needed
 	return 0
 }
@@ -16,7 +16,7 @@ func ACC(c *Cpu6502) uint8 {
 This a 2-byte instruction.This addressing mode have their operand defined
 as next byte to the opcode.
 */
-func IMM(c *Cpu6502) uint8 {
+func IMM(c *cpu.Cpu6502) uint8 {
 	c.Operand = c.Fetch()
 	return 0
 }
@@ -33,10 +33,10 @@ This mode is capable of addressing only 1st 256 bytes of memery.
 
 By default high addr will 0x00 -> Zero page
 */
-func ZPA(c *Cpu6502) uint8 {
+func ZPA(c *cpu.Cpu6502) uint8 {
 	high := uint8(0x00)
 	low := c.Fetch()
-	addr := LittleEndianAddr(low, high)
+	addr := cpu.LittleEndianAddr(low, high)
 	c.Addr = addr
 	c.Operand = c.Read(addr)
 	return 0
@@ -52,7 +52,7 @@ This mode is capable of addressing only 1st 256 bytes of memory.
 2nd byte -> addr low
 addr = low + X
 */
-func ZPX(c *Cpu6502) uint8 {
+func ZPX(c *cpu.Cpu6502) uint8 {
 	low := c.Fetch()
 	addr := (uint16(low) + uint16(c.X.Get())) & 0x00ff
 	c.Addr = addr
@@ -72,7 +72,7 @@ This mode is capable of addressing only 1st 256 bytes of memory.
 
 addr = low + Y
 */
-func ZPY(c *Cpu6502) uint8 {
+func ZPY(c *cpu.Cpu6502) uint8 {
 	low := c.Fetch()
 	addr := (uint16(low) + uint16(c.Y.Get())) & 0x00ff
 	c.Addr = addr
@@ -92,10 +92,10 @@ This  a 3-byte instruction. This mode specifies the location of the operand.
 
 NOTE: 6502 uses Little Endian
 */
-func ABS(c *Cpu6502) uint8 {
+func ABS(c *cpu.Cpu6502) uint8 {
 	low := c.Fetch()
 	high := c.Fetch()
-	addr := LittleEndianAddr(low, high)
+	addr := cpu.LittleEndianAddr(low, high)
 	c.Addr = addr
 	c.Operand = c.Read(addr)
 	return 0
@@ -114,10 +114,10 @@ This mode contains is a 3-byte opcode. This mode specifies the location of the o
 Add the X register with the address produced by (high,low). If the operations crossed the  page then it consumes one more additional cycle.
 
 */
-func ABX(c *Cpu6502) uint8 {
+func ABX(c *cpu.Cpu6502) uint8 {
 	low := c.Fetch()
 	high := c.Fetch()
-	addr := LittleEndianAddr(low, high) + uint16(c.X.Get())
+	addr := cpu.LittleEndianAddr(low, high) + uint16(c.X.Get())
 	c.Addr = addr
 	c.Operand = c.Read(addr)
 
@@ -141,10 +141,10 @@ This mode contains is a 3-byte opcode. This mode specifies the location of the o
 
 Add the Y register with the address produced by (high,low). If the operations crossed the  page then it consumes one more additional cycle.
 */
-func ABY(c *Cpu6502) uint8 {
+func ABY(c *cpu.Cpu6502) uint8 {
 	low := c.Fetch()
 	high := c.Fetch()
-	addr := LittleEndianAddr(low, high) + uint16(c.Y.Get())
+	addr := cpu.LittleEndianAddr(low, high) + uint16(c.Y.Get())
 	c.Addr = addr
 	c.Operand = c.Read(addr)
 
@@ -161,13 +161,13 @@ func ABY(c *Cpu6502) uint8 {
 No operand addresses are required for this mode. They are implied by the
 instruction.
 */
-func IMP(c *Cpu6502) uint8 {
+func IMP(c *cpu.Cpu6502) uint8 {
 	// No logic is required
 	return 0
 }
 
 // Relative Mode
-func REL(c *Cpu6502) uint8 {
+func REL(c *cpu.Cpu6502) uint8 {
 	c.Operand = c.Fetch()
 	return 0
 }
@@ -180,12 +180,12 @@ This a 2 byte opcode.
 Add the Zero-page address with X register to get a new address in the Zero-page.
 This new address contains the target address.
 */
-func IDX(c *Cpu6502) uint8 {
+func IDX(c *cpu.Cpu6502) uint8 {
 	zpAddr := uint16(c.Fetch()) + uint16(c.X.Get())
 	zpAddr &= 0x00ff
 	low := c.Read(zpAddr)
 	high := c.Read(zpAddr + 1)
-	targetAddr := LittleEndianAddr(low, high)
+	targetAddr := cpu.LittleEndianAddr(low, high)
 	c.Addr = targetAddr
 	c.Operand = c.Read(targetAddr)
 	return 0
@@ -196,12 +196,12 @@ func IDX(c *Cpu6502) uint8 {
 // This is a 2 byte opcode. 1st byte is the instruction.
 // 2nd byte is the Zero-page memory location. Featch the address stored at Zero-page address
 // and Added it with Y Resister to get final target address.
-func IDY(c *Cpu6502) uint8 {
+func IDY(c *cpu.Cpu6502) uint8 {
 	zpAddr := uint16(c.Fetch())
 	low := c.Read(zpAddr)
 	high := c.Read(zpAddr + 1)
 
-	targetAddr := LittleEndianAddr(low, high) + uint16(c.Y.Get())
+	targetAddr := cpu.LittleEndianAddr(low, high) + uint16(c.Y.Get())
 
 	c.Addr = targetAddr
 	c.Operand = c.Read(targetAddr)
@@ -214,12 +214,12 @@ func IDY(c *Cpu6502) uint8 {
 // The JMP instruction is the only instruction that uses this addressing mode.
 // It is a 3 byte instruction - the 2nd and 3rd bytes are an absolute address.
 // The set the PC to the address stored at that address.
-func IND(c *Cpu6502) uint8 {
+func IND(c *cpu.Cpu6502) uint8 {
 	low := uint16(c.Fetch())
 	high := uint16(c.Fetch()) << 8
 	addr := low | high
 	targetLow := c.Read(addr)
 	targetHigh := c.Read(addr + 1)
-	c.Addr = LittleEndianAddr(targetLow, targetHigh)
+	c.Addr = cpu.LittleEndianAddr(targetLow, targetHigh)
 	return 0
 }
