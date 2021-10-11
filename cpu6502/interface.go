@@ -14,6 +14,15 @@ type PC16 interface {
 	Set(uint16)
 	Get() uint16
 	Increment()
+	Decrement()
+	Reset()
+}
+
+type SP8 interface {
+	Set(uint16)
+	Get() uint16
+	Increment()
+	Decrement()
 	Reset()
 }
 
