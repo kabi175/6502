@@ -15,13 +15,6 @@ const (
 	SIGN      = iota
 )
 
-type FlagRegister interface {
-	Set(int, bool)
-	Get(int) bool
-	Byte() uint8
-	Reset()
-}
-
 type flagRegister struct {
 	carry     bool
 	zero      bool
@@ -113,4 +106,31 @@ func (fr *flagRegister) Byte() uint8 {
 		flag |= 0x80
 	}
 	return flag
+}
+
+func (fr *flagRegister) SetByte(flag uint8) {
+
+	fr.Reset()
+
+	if flag&0x01 != 0 {
+		fr.carry = true
+	}
+	if flag&0x02 != 0 {
+		fr.zero = true
+	}
+	if flag&0x04 != 0 {
+		fr.interrupt = true
+	}
+	if flag&0x80 != 0 {
+		fr.decimal = true
+	}
+	if flag&0x10 != 0 {
+		fr.brk = true
+	}
+	if flag&0x40 != 0 {
+		fr.overflow = true
+	}
+	if flag&0x80 != 0 {
+		fr.sign = true
+	}
 }
