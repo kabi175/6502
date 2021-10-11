@@ -18,6 +18,7 @@ const (
 type FlagRegister interface {
 	Set(int, bool)
 	Get(int) bool
+	Byte() uint8
 	Reset()
 }
 
@@ -86,4 +87,30 @@ func (fr *flagRegister) Reset() {
 	fr.brk = false
 	fr.overflow = false
 	fr.sign = false
+}
+
+func (fr *flagRegister) Byte() uint8 {
+	flag := uint8(0)
+	if fr.carry {
+		flag |= 0x01
+	}
+	if fr.zero {
+		flag |= 0x02
+	}
+	if fr.interrupt {
+		flag |= 0x04
+	}
+	if fr.decimal {
+		flag |= 0x08
+	}
+	if fr.brk {
+		flag |= 0x10
+	}
+	if fr.overflow {
+		flag |= 0x40
+	}
+	if fr.sign {
+		flag |= 0x80
+	}
+	return flag
 }

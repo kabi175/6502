@@ -97,15 +97,15 @@ func (*opcode) JMP(c *cpu.Cpu6502) uint8 {
 
 func (*opcode) JSR(c *cpu.Cpu6502) uint8 {
 	c.PC.Decrement()
-	c.Push(uint8(c.PC.Get() >> 8))
-	c.Push(uint8(c.PC.Get()))
+	c.PUSH(uint8(c.PC.Get() >> 8))
+	c.PUSH(uint8(c.PC.Get()))
 	c.PC.Set(c.Addr)
 	return 0
 }
 
 func (*opcode) RTS(c *cpu.Cpu6502) uint8 {
-	src := uint16(c.Pull())
-	src += ((uint16(c.Pull()) << 8) + 1)
+	src := uint16(c.PULL())
+	src += ((uint16(c.PULL()) << 8) + 1)
 	c.PC.Set(src)
 	return 0
 }

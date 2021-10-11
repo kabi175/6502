@@ -84,22 +84,48 @@ func (c *Cpu6502) Reset() {
 	c.PC.Set(addr)
 }
 
-// set Overflow Flag on condition
+// Set Overflow Flag on condition
 func (c *Cpu6502) SET_OVERFLOW(cond bool) {
 	c.Flag.Set(OVERFLOW, cond)
 }
 
-// set CARRY if val is non zero
+// Set CARRY if val is non zero
 func (c *Cpu6502) SET_CARRY(val uint16) {
 	c.Flag.Set(CARRY, val != 0)
 }
 
-// set SIGN if val bit 7 is set
+// Set SIGN if val bit 7 is set
 func (c *Cpu6502) SET_SIGN(val uint16) {
 	c.Flag.Set(CARRY, val&0x80 != 0)
 }
 
-// set Zero if val is zero
+// Set Zero if val is zero
 func (c *Cpu6502) SET_ZERO(val uint16) {
 	c.Flag.Set(CARRY, val == 0)
+}
+
+// Set BREAk if val is non zero
+func (c *Cpu6502) SET_BREAk(val uint16) {
+	c.Flag.Set(CARRY, val != 0)
+}
+
+// Set INTERRUPT  if val is non zero
+func (c *Cpu6502) SET_INTERRUPT(val uint16) {
+	c.Flag.Set(INTERRUPT, val != 0)
+}
+
+// Set DECIMAL if val is non zero
+func (c *Cpu6502) SET_DECIMAL(val uint16) {
+	c.Flag.Set(DECIMAL, val != 0)
+}
+
+func (c *Cpu6502) PUSH(byte uint8) {
+	c.Write(0x0100|c.SP.Get(), byte)
+	c.SP.Decrement()
+}
+
+func (c *Cpu6502) PULL() uint8 {
+	byte := c.Read(0x0100 | c.SP.Get())
+	c.SP.Increment()
+	return byte
 }
