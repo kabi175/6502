@@ -83,3 +83,23 @@ func (c *Cpu6502) Reset() {
 	addr := LittleEndianAddr(low, high)
 	c.PC.Set(addr)
 }
+
+// set Overflow Flag on condition
+func (c *Cpu6502) SET_OVERFLOW(cond bool) {
+	c.Flag.Set(OVERFLOW, cond)
+}
+
+// set CARRY if val is non zero
+func (c *Cpu6502) SET_CARRY(val uint16) {
+	c.Flag.Set(CARRY, val != 0)
+}
+
+// set SIGN if val bit 7 is set
+func (c *Cpu6502) SET_SIGN(val uint16) {
+	c.Flag.Set(CARRY, val&0x80 != 0)
+}
+
+// set Zero if val is zero
+func (c *Cpu6502) SET_ZERO(val uint16) {
+	c.Flag.Set(CARRY, val == 0)
+}
