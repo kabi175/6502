@@ -19,11 +19,16 @@ func (p *pc) Get() uint16 {
 }
 
 func (p *pc) Reset() {
-	var initialState uint16 = 0
+	initialState := uint16(0)
 	p.Set(initialState)
 }
 
 func (p *pc) Increment() {
-	nextState := p.Get()
+	nextState := p.Get() + 1
+	p.Set(nextState)
+}
+
+func (p *pc) Decrement() {
+	nextState := p.Get() - 1
 	p.Set(nextState)
 }
