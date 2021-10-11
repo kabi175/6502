@@ -29,3 +29,11 @@ type SP8 interface {
 type Opcode interface {
 	Execute(*Cpu6502) uint8
 }
+
+type FlagRegister interface {
+	Set(int, bool)
+	Get(int) bool
+	Byte() uint8
+	SetByte(uint8)
+	Reset()
+}
