@@ -103,6 +103,7 @@ func (o *opcode) BIT(c *cpu.Cpu6502) uint8 {
 	return 0
 }
 
+// Compare Memory and Accumulator
 // Flags: S, Z, C
 func (o *opcode) CMP(c *cpu.Cpu6502) uint8 {
 	src := uint16(c.A.Get()) - uint16(c.Operand)
@@ -113,6 +114,7 @@ func (o *opcode) CMP(c *cpu.Cpu6502) uint8 {
 }
 
 // Decrement Memory by One
+// Flags S, C
 func (O *opcode) DEC(c *cpu.Cpu6502) uint8 {
 	src := (c.Operand - 1) & 0xff
 	c.SET_SIGN(uint16(src))
@@ -122,6 +124,7 @@ func (O *opcode) DEC(c *cpu.Cpu6502) uint8 {
 }
 
 // XOR Memory with Accumulator
+// Flags S, C
 func (o *opcode) EOR(c *cpu.Cpu6502) uint8 {
 	src := (c.Operand ^ c.A.Get())
 	c.SET_SIGN(uint16(src))
@@ -130,6 +133,8 @@ func (o *opcode) EOR(c *cpu.Cpu6502) uint8 {
 	return 0
 }
 
+// Shift Right One Bit (Memory or Accumulator)
+//Flags C, Z, S
 func (o *opcode) LSR(c *cpu.Cpu6502) uint8 {
 	c.SET_CARRY(uint16(c.Operand & 0x01))
 	c.Operand <<= 1
@@ -145,6 +150,7 @@ func (o *opcode) LSR(c *cpu.Cpu6502) uint8 {
 }
 
 // OR memory with A reg
+// Flags S, Z
 func (o *opcode) ORA(c *cpu.Cpu6502) uint8 {
 	c.Operand |= c.A.Get()
 	c.SET_SIGN(uint16(c.Operand))
@@ -153,7 +159,8 @@ func (o *opcode) ORA(c *cpu.Cpu6502) uint8 {
 	return 0
 }
 
-//
+// Rotate One Bit Left (Memory or Accumulator)
+// Flags S, Z, C
 func (o *opcode) ROL(c *cpu.Cpu6502) uint8 {
 	src := uint16(c.Operand) << 1
 	if c.Flag.Get(cpu.CARRY) {
@@ -172,6 +179,8 @@ func (o *opcode) ROL(c *cpu.Cpu6502) uint8 {
 	return 0
 }
 
+// Rotate One Bit Right (Memory or Accumulator)
+// Flags S, Z, C
 func (o *opcode) ROR(c *cpu.Cpu6502) uint8 {
 	src := uint16(c.Operand)
 	if c.Flag.Get(cpu.CARRY) {
@@ -190,6 +199,8 @@ func (o *opcode) ROR(c *cpu.Cpu6502) uint8 {
 	return 0
 }
 
+// Subtract Memory from Accumulator with Borrow
+// Flags S, Z, V, C
 func (o *opcode) SBC(c *cpu.Cpu6502) uint8 {
 	temp := uint16(c.A.Get()) - uint16(c.Operand)
 	if !c.Flag.Get(cpu.CARRY) {
