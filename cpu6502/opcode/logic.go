@@ -86,7 +86,7 @@ func (o *opcode) ASL(c *cpu.Cpu6502) uint8 {
 	c.SET_SIGN(uint16(c.Operand))
 	c.SET_ZERO(uint16(c.Operand))
 	// Store Operand in memory or in A reg
-	if o.mode == "ACC" {
+	if o.Mode == ACC {
 		c.A.Set(c.Operand)
 		return 0
 	}
@@ -141,7 +141,7 @@ func (o *opcode) LSR(c *cpu.Cpu6502) uint8 {
 	c.SET_SIGN(uint16(c.Operand))
 	c.SET_ZERO(uint16(c.Operand))
 	// Store Operand in memory or in A reg
-	if o.mode == "ACC" {
+	if o.Mode == ACC {
 		c.A.Set(c.Operand)
 		return 0
 	}
@@ -171,7 +171,7 @@ func (o *opcode) ROL(c *cpu.Cpu6502) uint8 {
 	c.SET_SIGN(uint16(c.Operand))
 	c.SET_ZERO(uint16(c.Operand))
 	// Store Operand in memory or in A reg
-	if o.mode == "ACC" {
+	if o.Mode == ACC {
 		c.A.Set(c.Operand)
 		return 0
 	}
@@ -191,7 +191,7 @@ func (o *opcode) ROR(c *cpu.Cpu6502) uint8 {
 	c.SET_SIGN(uint16(c.Operand))
 	c.SET_ZERO(uint16(c.Operand))
 	// Store Operand in memory or in A reg
-	if o.mode == "ACC" {
+	if o.Mode == ACC {
 		c.A.Set(c.Operand)
 		return 0
 	}
