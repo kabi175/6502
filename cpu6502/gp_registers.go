@@ -13,6 +13,7 @@ func NewGP8() GP8 {
 func (r *GP8Register) Get() uint8 {
 	return r.data
 }
+
 func (r *GP8Register) Set(data uint8) {
 	r.data = data
 }

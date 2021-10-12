@@ -37,3 +37,7 @@ type FlagRegister interface {
 	SetByte(uint8)
 	Reset()
 }
+
+type Debugger interface {
+	Render(*Cpu6502)
+}

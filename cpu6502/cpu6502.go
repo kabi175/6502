@@ -11,10 +11,11 @@ type Cpu6502 struct {
 	X       GP8
 	Y       GP8
 	Bus     Bus16
+	deb     Debugger
 }
 
 //	Constructor function to create CPU6502
-func New(bus Bus16, opcodes map[uint16]Opcode) *Cpu6502 {
+func New(bus Bus16, opcodes map[uint16]Opcode, deb Debugger) *Cpu6502 {
 	return &Cpu6502{
 		Opcodes: opcodes,
 		PC:      NewPC(),
@@ -24,6 +25,7 @@ func New(bus Bus16, opcodes map[uint16]Opcode) *Cpu6502 {
 		X:       NewGP8(),
 		Y:       NewGP8(),
 		Bus:     bus,
+		deb:     deb,
 	}
 }
 
@@ -51,6 +53,7 @@ func (c *Cpu6502) Execute(close chan bool) {
 	for !isClosed(close) {
 		opcode := c.Fetch()
 		c.Opcodes[uint16(opcode)].Execute(c)
+		c.deb.Render(c)
 	}
 }
 
