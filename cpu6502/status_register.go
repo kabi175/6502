@@ -6,13 +6,13 @@ import (
 )
 
 const (
-	CARRY     = 0
-	ZERO      = iota
-	INTERRUPT = iota
-	DECIMAL   = iota
-	BREAK     = iota
-	OVERFLOW  = iota
-	SIGN      = iota
+	CARRY = iota
+	ZERO
+	INTERRUPT
+	DECIMAL
+	BREAK
+	OVERFLOW
+	SIGN
 )
 
 type flagRegister struct {
@@ -45,10 +45,10 @@ func (fr *flagRegister) Set(flag int, state bool) {
 		fr.overflow = state
 	case SIGN:
 		fr.sign = state
+	default:
+		errorMessage := fmt.Sprintf("status register func Set \n %v flag not found", flag)
+		panic(errors.New(errorMessage))
 	}
-	errorMessage := fmt.Sprintf("status register func Set \n %v flag not found", flag)
-	panic(errors.New(errorMessage))
-
 }
 
 func (fr *flagRegister) Get(flag int) bool {
@@ -67,9 +67,10 @@ func (fr *flagRegister) Get(flag int) bool {
 		return fr.overflow
 	case SIGN:
 		return fr.sign
+	default:
+		errorMessage := fmt.Sprintf("status register func Get \n %v flag not found", flag)
+		panic(errors.New(errorMessage))
 	}
-	errorMessage := fmt.Sprintf("status register func Get \n %v flag not found", flag)
-	panic(errors.New(errorMessage))
 }
 
 func (fr *flagRegister) Reset() {
