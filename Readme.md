@@ -1,5 +1,7 @@
 # Emulator 6502
 
+![Test Workflow](https://github.com/kabi175/6502/actions/workflows/test.yml/badge.svg)
+
 This software component emulates the behaviour of mos6502 processor.
 
 ### Introduction
