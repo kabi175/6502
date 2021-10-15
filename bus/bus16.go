@@ -4,7 +4,11 @@ type Bus16 struct {
 	Ram [1024 * 64]uint8
 }
 
-func NewBus16(ram [1024 * 64]uint8) *Bus16 {
+func NewBus16(prg []uint8) *Bus16 {
+	var ram [1024 * 64]uint8
+	for index, code := range prg {
+		ram[index] = code
+	}
 	return &Bus16{
 		Ram: ram,
 	}
