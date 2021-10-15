@@ -13,5 +13,6 @@ jobs:
               uses: actions/setup-go@v2
               with:
                   go-version: ${{ matrix.go }}
+            if: matrix.os == 'ubuntu-latest'
             - run: apt install libsdl2{,-image,-mixer,-ttf,-gfx}-dev -y
             - run: go test ./...
