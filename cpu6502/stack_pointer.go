@@ -6,7 +6,7 @@ type sp struct {
 
 func NewSP8() SP8 {
 	return &sp{
-		pointer: 0,
+		pointer: 0xFF,
 	}
 }
 
