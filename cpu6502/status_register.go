@@ -21,6 +21,7 @@ type flagRegister struct {
 	interrupt bool
 	decimal   bool
 	brk       bool
+	unused    bool
 	overflow  bool
 	sign      bool
 }
@@ -79,12 +80,13 @@ func (fr *flagRegister) Reset() {
 	fr.decimal = false
 	fr.zero = false
 	fr.brk = false
+	fr.unused = true
 	fr.overflow = false
 	fr.sign = false
 }
 
 func (fr *flagRegister) Byte() uint8 {
-	flag := uint8(0)
+	flag := uint8(0x20)
 	if fr.carry {
 		flag |= 0x01
 	}
@@ -122,7 +124,7 @@ func (fr *flagRegister) SetByte(flag uint8) {
 	if flag&0x04 != 0 {
 		fr.interrupt = true
 	}
-	if flag&0x80 != 0 {
+	if flag&0x08 != 0 {
 		fr.decimal = true
 	}
 	if flag&0x10 != 0 {
