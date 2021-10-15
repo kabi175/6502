@@ -1,5 +1,7 @@
 package cpu6502
 
+import "log"
+
 type Cpu6502 struct {
 	Operand       uint8
 	Addr          uint16
@@ -52,10 +54,12 @@ func (c *Cpu6502) Execute(close chan bool) {
 	c.Reset()
 	for !isClosed(close) {
 		opcodeHex := c.Fetch()
+		log.Printf("COMMAND %X", opcodeHex)
 		opcode := c.OpcodeBuilder(opcodeHex)
 		opcode.Execute(c)
 		c.deb.Render(c)
 		if opcode.IsBreak() {
+			log.Println("BRK COMMAND EXECUTED")
 			break
 		}
 	}
