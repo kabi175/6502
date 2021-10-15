@@ -103,17 +103,17 @@ func (c *Cpu6502) SET_CARRY(val uint16) {
 
 // Set SIGN if val bit 7 is set
 func (c *Cpu6502) SET_SIGN(val uint16) {
-	c.Flag.Set(CARRY, val&0x80 != 0)
+	c.Flag.Set(SIGN, val&0x80 != 0)
 }
 
 // Set Zero if val is zero
 func (c *Cpu6502) SET_ZERO(val uint16) {
-	c.Flag.Set(CARRY, val == 0)
+	c.Flag.Set(ZERO, val == 0)
 }
 
 // Set BREAk if val is non zero
 func (c *Cpu6502) SET_BREAk(val uint16) {
-	c.Flag.Set(CARRY, val != 0)
+	c.Flag.Set(BREAK, val != 0)
 }
 
 // Set INTERRUPT  if val is non zero
