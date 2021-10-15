@@ -28,6 +28,7 @@ type SP8 interface {
 
 type Opcode interface {
 	Execute(*Cpu6502) uint8
+	IsBreak() bool
 }
 
 type FlagRegister interface {

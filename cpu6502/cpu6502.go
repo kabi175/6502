@@ -1,31 +1,31 @@
 package cpu6502
 
 type Cpu6502 struct {
-	Operand uint8
-	Addr    uint16
-	Opcodes map[uint16]Opcode
-	PC      PC16
-	SP      SP8
-	Flag    FlagRegister
-	A       GP8
-	X       GP8
-	Y       GP8
-	Bus     Bus16
-	deb     Debugger
+	Operand       uint8
+	Addr          uint16
+	OpcodeBuilder func(uint8) Opcode
+	PC            PC16
+	SP            SP8
+	Flag          FlagRegister
+	A             GP8
+	X             GP8
+	Y             GP8
+	Bus           Bus16
+	deb           Debugger
 }
 
 //	Constructor function to create CPU6502
-func New(bus Bus16, opcodes map[uint16]Opcode, deb Debugger) *Cpu6502 {
+func New(bus Bus16, opcodeBuilder func(uint8) Opcode, deb Debugger) *Cpu6502 {
 	return &Cpu6502{
-		Opcodes: opcodes,
-		PC:      NewPC(),
-		SP:      NewSP8(),
-		Flag:    NewFlagRegister(),
-		A:       NewGP8(),
-		X:       NewGP8(),
-		Y:       NewGP8(),
-		Bus:     bus,
-		deb:     deb,
+		OpcodeBuilder: opcodeBuilder,
+		PC:            NewPC(),
+		SP:            NewSP8(),
+		Flag:          NewFlagRegister(),
+		A:             NewGP8(),
+		X:             NewGP8(),
+		Y:             NewGP8(),
+		Bus:           bus,
+		deb:           deb,
 	}
 }
 
@@ -51,9 +51,13 @@ func isClosed(close chan bool) bool {
 func (c *Cpu6502) Execute(close chan bool) {
 	c.Reset()
 	for !isClosed(close) {
-		opcode := c.Fetch()
-		c.Opcodes[uint16(opcode)].Execute(c)
+		opcodeHex := c.Fetch()
+		opcode := c.OpcodeBuilder(opcodeHex)
+		opcode.Execute(c)
 		c.deb.Render(c)
+		if opcode.IsBreak() {
+			break
+		}
 	}
 }
 
