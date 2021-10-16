@@ -1,8 +1,6 @@
 package cpu6502
 
 import (
-	"log"
-
 	"github.com/kabi175/6502/model"
 )
 
@@ -17,23 +15,13 @@ type Cpu6502 struct {
 	X             model.GP8
 	Y             model.GP8
 	Bus           model.Bus16
+	eventQueue    model.EventQueue
+	deb           model.Debugger
 }
 
-//	Constructor function to create CPU6502
-func New(bus model.Bus16) *Cpu6502 {
-	return &Cpu6502{
-		PC:   NewPC(),
-		SP:   NewSP8(),
-		Flag: NewFlagRegister(),
-		A:    NewGP8(),
-		X:    NewGP8(),
-		Y:    NewGP8(),
-		Bus:  bus,
-	}
-}
-
-func (c *Cpu6502) AttachOpcodeBuilder(builder model.OpcodeBuilder) {
+func (c *Cpu6502) AttachOpcodeBuilder(builder model.OpcodeBuilder) *Cpu6502 {
 	c.opcodeBuilder = builder
+	return c
 }
 
 // Helper function to check the channel for new message or chan close
@@ -59,11 +47,9 @@ func (c *Cpu6502) Execute(close chan bool) {
 	c.Reset()
 	for !isClosed(close) {
 		opcodeHex := c.Fetch()
-		log.Printf("COMMAND %X", opcodeHex)
 		opcode := c.opcodeBuilder.Build(opcodeHex)
 		opcode.Execute()
-		if opcode.IsBreak() {
-			log.Println("BRK COMMAND EXECUTED")
+		if opcode.IsBreak() || (c != nil && c.deb.IsEnd(c.PC.Get())) {
 			break
 		}
 	}
