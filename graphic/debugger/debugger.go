@@ -1,5 +1,6 @@
 package debugger
 
+/*
 import (
 	"fmt"
 
@@ -70,3 +71,4 @@ func (d *Debugger) Render(c *cpu.Cpu6502) {
 	d.HandleEvent()
 	d.Logger(c)
 }
+*/
