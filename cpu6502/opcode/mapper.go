@@ -2,11 +2,9 @@ package opcode
 
 import (
 	"fmt"
-
-	"github.com/kabi175/6502/cpu6502"
 )
 
-func NewOpcode(code uint8) cpu6502.Opcode {
+func NewOpcode(code uint8) *opcode {
 	switch code {
 	case 0x00:
 		return &opcode{
