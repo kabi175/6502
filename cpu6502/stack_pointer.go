@@ -1,10 +1,12 @@
 package cpu6502
 
+import "github.com/kabi175/6502/model"
+
 type sp struct {
 	pointer uint8
 }
 
-func NewSP8() SP8 {
+func NewSP8() model.SP8 {
 	return &sp{
 		pointer: 0xFF,
 	}

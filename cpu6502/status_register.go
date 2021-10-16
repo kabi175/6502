@@ -3,6 +3,8 @@ package cpu6502
 import (
 	"errors"
 	"fmt"
+
+	"github.com/kabi175/6502/model"
 )
 
 const (
@@ -26,7 +28,7 @@ type flagRegister struct {
 	sign      bool
 }
 
-func NewFlagRegister() FlagRegister {
+func NewFlagRegister() model.FlagRegister {
 	return &flagRegister{}
 }
 

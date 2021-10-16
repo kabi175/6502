@@ -1,34 +1,39 @@
 package cpu6502
 
-import "log"
+import (
+	"log"
+
+	"github.com/kabi175/6502/model"
+)
 
 type Cpu6502 struct {
 	Operand       uint8
 	Addr          uint16
-	OpcodeBuilder func(uint8) Opcode
-	PC            PC16
-	SP            SP8
-	Flag          FlagRegister
-	A             GP8
-	X             GP8
-	Y             GP8
-	Bus           Bus16
-	deb           Debugger
+	opcodeBuilder model.OpcodeBuilder
+	PC            model.PC16
+	SP            model.SP8
+	Flag          model.FlagRegister
+	A             model.GP8
+	X             model.GP8
+	Y             model.GP8
+	Bus           model.Bus16
 }
 
 //	Constructor function to create CPU6502
-func New(bus Bus16, opcodeBuilder func(uint8) Opcode, deb Debugger) *Cpu6502 {
+func New(bus model.Bus16) *Cpu6502 {
 	return &Cpu6502{
-		OpcodeBuilder: opcodeBuilder,
-		PC:            NewPC(),
-		SP:            NewSP8(),
-		Flag:          NewFlagRegister(),
-		A:             NewGP8(),
-		X:             NewGP8(),
-		Y:             NewGP8(),
-		Bus:           bus,
-		deb:           deb,
+		PC:   NewPC(),
+		SP:   NewSP8(),
+		Flag: NewFlagRegister(),
+		A:    NewGP8(),
+		X:    NewGP8(),
+		Y:    NewGP8(),
+		Bus:  bus,
 	}
+}
+
+func (c *Cpu6502) AttachOpcodeBuilder(builder model.OpcodeBuilder) {
+	c.opcodeBuilder = builder
 }
 
 // Helper function to check the channel for new message or chan close
@@ -55,9 +60,8 @@ func (c *Cpu6502) Execute(close chan bool) {
 	for !isClosed(close) {
 		opcodeHex := c.Fetch()
 		log.Printf("COMMAND %X", opcodeHex)
-		opcode := c.OpcodeBuilder(opcodeHex)
-		opcode.Execute(c)
-		c.deb.Render(c)
+		opcode := c.opcodeBuilder.Build(opcodeHex)
+		opcode.Execute()
 		if opcode.IsBreak() {
 			log.Println("BRK COMMAND EXECUTED")
 			break
@@ -136,7 +140,6 @@ func (c *Cpu6502) PUSH(byte uint8) {
 }
 
 func (c *Cpu6502) PULL() uint8 {
-	byte := c.Read(0x0100 | c.SP.Get())
 	c.SP.Increment()
-	return byte
+	return c.Read(0x0100 | c.SP.Get())
 }

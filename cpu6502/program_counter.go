@@ -1,10 +1,12 @@
 package cpu6502
 
+import "github.com/kabi175/6502/model"
+
 type pc struct {
 	counter uint16
 }
 
-func NewPC() PC16 {
+func NewPC() model.PC16 {
 	return &pc{
 		counter: 0,
 	}
