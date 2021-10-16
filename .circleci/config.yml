@@ -1,6 +1,8 @@
 version: 2.1
+orbs:
+    codecov: codecov/codecov@1.0.2
 jobs:
-    build:
+    test:
         working_directory: ~/repo
         docker:
             - image: circleci/golang:1.14.6
@@ -19,3 +21,31 @@ jobs:
             - run:
                   name: Run tests
                   command: go test ./... -v
+    coverage:
+        working_directory: ~/repo
+        docker:
+            - image: circleci/golang:1.14.6
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - go-mod-v4-{{ checksum "go.sum" }}
+            - run:
+                  name: Install Dependencies
+                  command: go get ./...
+            - save_cache:
+                  key: go-mod-v4-{{ checksum "go.sum" }}
+                  paths:
+                      - '/go/pkg/mod'
+            - run:
+                  name: Generate coverage report
+                  command: go test ./... -coverprofile=coverage.out
+            - codecov/upload:
+                  file: { { ./coverage.out } }
+workflows:
+    build_and_test:
+        jobs:
+            - test
+            - coverage:
+                  requires:
+                      - test
