@@ -16,3 +16,5 @@ jobs:
               if: matrix.os == 'ubuntu-latest'
             - run: sudo apt update && sudo apt install -y --no-install-recommends libsdl2{,-image,-mixer,-ttf,-gfx}-dev
             - run: go test ./...
+            - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic
+            - run: bash <(curl -s https://codecov.io/bash)
