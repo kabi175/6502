@@ -7,63 +7,28 @@ import cpu "github.com/kabi175/6502/cpu6502"
 // if DECIMAL Flag enable perform BCD addition
 // Flags: C, V, S, Z
 func (o *opcode) ADC(c *cpu.Cpu6502) uint8 {
-	mem := c.Operand
-	A := c.A.Get()
-	if !c.Flag.Get(cpu.DECIMAL) {
-		// Process the addition in 8-bit binary addion mode
-		if c.Flag.Get(cpu.CARRY) {
-			mem += 0x01
-		}
-		result := A + mem
-
-		c.A.Set(result)
-
-		c.Flag.Set(cpu.OVERFLOW, cpu.IsOverFlow(A, mem))
-		c.Flag.Set(cpu.CARRY, cpu.IsCarry(A, mem))
-		c.Flag.Set(cpu.SIGN, cpu.IsNev(result))
-		c.Flag.Set(cpu.ZERO, cpu.IsZero(result))
-
-		return 0
-	}
-	// process addition in Decimal Mode
-	// Split the memory and A reg
-	memLow := mem & 0x0f
-	memHigh := (mem & 0xf0) >> 4
-	ALow := A & 0x0f
-	AHigh := (A & 0xf0) >> 4
-
-	// Add memory low and A Register low to get result low
-	resultLow := memLow + ALow
-
-	// if carry flag set add 1 to low result
+	carry := uint8(0)
 	if c.Flag.Get(cpu.CARRY) {
-		resultLow++
+		carry = 1
 	}
-
-	// Add memory high and A Register high to get result high
-	resultHigh := memHigh + AHigh
-
-	// if result  low greater than 9 (to fin in a digit),
-	// add the carry to result high
-	if resultLow > 9 {
-		resultHigh++
+	temp := uint16(c.A.Get()) + uint16(c.Operand) + uint16(carry)
+	c.SET_ZERO(temp & 0xff)
+	if c.Flag.Get(cpu.DECIMAL) {
+		if (c.A.Get()&0x0f)+(c.Operand&0xf)+carry > 0x09 {
+			temp += 6
+		}
+		c.SET_SIGN(temp)
+		c.SET_OVERFLOW(((c.A.Get()^c.Operand)&0x80 == 0) && ((uint16(c.A.Get())^temp)&0x80) != 0)
+		if temp > 0x99 {
+			temp += 96
+		}
+		c.SET_CARRY(temp & 0x99)
+	} else {
+		c.SET_SIGN(temp)
+		c.SET_OVERFLOW(((c.A.Get()^c.Operand)&0x80 == 0) && ((uint16(c.A.Get())^temp)&0x80) != 0)
+		c.SET_CARRY(temp & 0xff00)
 	}
-	// use result  low 4 bit and high 4 bit to get result
-	result := resultLow & 0x0f
-	result |= ((resultHigh & 0x0f) << 4)
-
-	// update the result value to the A reg
-	c.A.Set(result)
-
-	// if result high is greate that 9, set CARRY Flag
-	// if result high's 1st(MSB) 4 bit is set, an overflow is caused
-	// if the result is zero set ZERO Flag
-	// if the result's bit-7 is set, then set SIGN Flag
-	c.Flag.Set(cpu.CARRY, resultHigh > 9)
-	c.Flag.Set(cpu.OVERFLOW, resultHigh&0xf0 != 0)
-	c.Flag.Set(cpu.ZERO, cpu.IsZero(result))
-	c.Flag.Set(cpu.SIGN, cpu.IsNev(result))
-
+	c.A.Set(uint8(temp))
 	return 0
 }
 
