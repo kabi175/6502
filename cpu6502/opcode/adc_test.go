@@ -1,4 +1,4 @@
-package cpu6502_test
+package opcode_test
 
 import (
 	"testing"
