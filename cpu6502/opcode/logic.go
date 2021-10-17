@@ -12,22 +12,24 @@ func (o *opcode) ADC(c *cpu.Cpu6502) uint8 {
 		carry = 1
 	}
 	temp := uint16(c.A.Get()) + uint16(c.Operand) + uint16(carry)
-	c.SET_ZERO(temp & 0xff)
 	if c.Flag.Get(cpu.DECIMAL) {
 		if (c.A.Get()&0x0f)+(c.Operand&0xf)+carry > 0x09 {
 			temp += 6
 		}
-		c.SET_SIGN(temp)
 		c.SET_OVERFLOW(((c.A.Get()^c.Operand)&0x80 == 0) && ((uint16(c.A.Get())^temp)&0x80) != 0)
 		if temp > 0x99 {
 			temp += 96
 		}
-		c.SET_CARRY(temp & 0x99)
+		c.SET_CARRY(0)
+		if temp > 0x99 {
+			c.SET_CARRY(1)
+		}
 	} else {
-		c.SET_SIGN(temp)
 		c.SET_OVERFLOW(((c.A.Get()^c.Operand)&0x80 == 0) && ((uint16(c.A.Get())^temp)&0x80) != 0)
 		c.SET_CARRY(temp & 0xff00)
 	}
+	c.SET_SIGN(temp)
+	c.SET_ZERO(temp & 0xff)
 	c.A.Set(uint8(temp))
 	return 0
 }
