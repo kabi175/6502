@@ -16,7 +16,7 @@ type Config struct {
 // Cpu builder package for internal testing
 func NewCpuBuilder(c *Config) *cpu6502.Cpu6502 {
 	if c.End == 0 {
-		c.End = uint16(len(c.Prg) - 1)
+		c.End = uint16(len(c.Prg))
 	}
 	bus := bus.NewBus16(c.Prg)
 	deb := debugger.NewDebugger(c.Breaks, c.End)
