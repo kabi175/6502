@@ -71,3 +71,69 @@ func TestDecimalMode(t *testing.T) {
 
 	test.ProgramTest(t, tests)
 }
+
+func TestZP(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x85, 0xff, 0xa9, 0x00, 0x65, 0xff},
+			A:    uint8(0xA2),
+			SP:   uint8(0xFF),
+			PC:   uint16(0x08),
+			Flag: 0b10100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+
+func TestZPX(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x85, 0xff, 0xa2, 0x05, 0xa9, 0x00, 0x75, 0xfa},
+			A:    uint8(0xA2),
+			X:    uint8(0x05),
+			SP:   uint8(0xFF),
+			PC:   uint16(0x0A),
+			Flag: 0b10100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+
+func TestABS(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x8d, 0x00, 0x10, 0xa9, 000, 0x6d, 0x00, 0x10},
+			A:    uint8(0xA2),
+			SP:   uint8(0xFF),
+			PC:   uint16(0x0A),
+			Flag: 0b10100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+func TestABX(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x8d, 0x05, 0x10, 0xa2, 0x05, 0xa9, 0x00, 0x7d, 0x00, 0x10},
+			A:    uint8(0xA2),
+			X:    uint8(0x05),
+			SP:   uint8(0xFF),
+			PC:   uint16(0x0C),
+			Flag: 0b10100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+func TestABY(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x8d, 0x05, 0x10, 0xa0, 0x05, 0xa9, 0x00, 0x79, 0x00, 0x10},
+			A:    uint8(0xA2),
+			Y:    uint8(0x05),
+			SP:   uint8(0xFF),
+			PC:   uint16(0x0C),
+			Flag: 0b10100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
