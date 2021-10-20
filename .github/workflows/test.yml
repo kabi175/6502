@@ -17,4 +17,6 @@ jobs:
             - run: sudo apt update && sudo apt install -y --no-install-recommends libsdl2{,-image,-mixer,-ttf,-gfx}-dev
             - run: go test ./...
             - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic
-            - run: bash <(curl -s https://codecov.io/bash)
+            - run: export CODACY_PROJECT_TOKEN=${{ secret.CODACY_PROJECT_TOKEN }}
+            - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.txt
+
