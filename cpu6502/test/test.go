@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/kabi175/6502/cpu6502/opcode"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,4 +32,10 @@ func ProgramTest(t *testing.T, tests []Cputest) {
 			assert.Equalf(t, test.Flag, cpu.Flag.Byte(), "Error Flag Register:%b", cpu.Flag.Byte())
 		})
 	}
+}
+
+func OpcodeTest(t *testing.T, hex uint8, ins opcode.INSTRUCTION, mode opcode.ADDRMODE) {
+	got := opcode.NewOpcode(hex)
+	assert.Equal(t, ins, got.Ins, "Invalid Instruction")
+	assert.Equal(t, mode, got.Mode, "Invalid Addressing Mode")
 }
