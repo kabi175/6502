@@ -496,7 +496,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x90:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  REL,
 			Ins:   BCC,
 		}
 	case 0x91:
