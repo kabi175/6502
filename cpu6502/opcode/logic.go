@@ -82,7 +82,7 @@ func (o *opcode) CMP(c *cpu.CPU6502) uint8 {
 
 // Decrement Memory by One
 // Flags S, C
-func (O *opcode) DEC(c *cpu.CPU6502) uint8 {
+func (o *opcode) DEC(c *cpu.CPU6502) uint8 {
 	src := (c.Operand - 1) & 0xff
 	c.SET_SIGN(uint16(src))
 	c.SET_ZERO(uint16(src))
