@@ -13,9 +13,11 @@ jobs:
               uses: actions/setup-go@v2
               with:
                   go-version: ${{ matrix.go }}
+
+            - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic
             - uses: actions/checkout@v2
             - name: Run codacy-coverage-reporter
               uses: codacy/codacy-coverage-reporter-action@v1
               with:
                   project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-                  coverage-reports: cobertura.xml
+                  coverage-reports: coverage.txt
