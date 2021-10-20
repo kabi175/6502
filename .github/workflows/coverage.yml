@@ -1,4 +1,4 @@
-name: Test
+name: Coverage Report
 on: [push]
 jobs:
     coverage:
@@ -15,9 +15,4 @@ jobs:
                   go-version: ${{ matrix.go }}
 
             - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic
-            - uses: actions/checkout@v2
-            - name: Run codacy-coverage-reporter
-              uses: codacy/codacy-coverage-reporter-action@v1
-              with:
-                  project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-                  coverage-reports: coverage.txt
+            - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.txt -t ${{ secrets.CODACY_PROJECT_TOKEN }}
