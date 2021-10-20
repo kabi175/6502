@@ -184,7 +184,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x31:
 		return &opcode{
 			Cycle: 0,
-			Mode:  IDX,
+			Mode:  IDY,
 			Ins:   AND,
 		}
 	case 0x35:
