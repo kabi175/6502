@@ -1,7 +1,7 @@
 package model
 
 // An interface for Cpu
-type Cpu interface {
+type CPU interface {
 	Execute(chan bool) // Execute method runs opcodes
 	State() []byte     // Get Cpu State in JSON fromat
 }
