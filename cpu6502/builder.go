@@ -5,7 +5,7 @@ import (
 )
 
 //	Constructor function to create CPU6502
-func NewCpu(bus model.Bus16, deb model.Debugger) *Cpu6502 {
+func NewCPU(bus model.Bus16, deb model.Debugger) *Cpu6502 {
 	return &Cpu6502{
 		PC:   NewPC(),
 		SP:   NewSP8(),
