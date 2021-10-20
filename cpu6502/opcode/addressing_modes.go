@@ -223,5 +223,3 @@ func (*opcode) IND(c *cpu.CPU6502) uint8 {
 	c.Addr = cpu.LittleEndianAddr(targetLow, targetHigh)
 	return 0
 }
-
-func (*opcode) NIL(*cpu.CPU6502) uint8 { return 0 }

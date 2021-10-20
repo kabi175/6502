@@ -9,7 +9,6 @@ type INSTRUCTION string
 
 // ADDRESSING MODE ENUM
 const (
-	NIL ADDRMODE = "NIL"
 	ACC ADDRMODE = "ACC"
 	IMM ADDRMODE = "IMM"
 	ZPA ADDRMODE = "ZPA"
@@ -96,8 +95,6 @@ func (o *opcode) Execute() uint8 {
 	c := o.cpu
 	cycle := o.Cycle
 	switch o.Mode {
-	case NIL:
-		cycle += o.NIL(c)
 	case ACC:
 		cycle += o.ACC(c)
 	case IMM:

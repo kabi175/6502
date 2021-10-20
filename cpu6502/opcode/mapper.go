@@ -9,7 +9,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x00:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BRK,
 		}
 	case 0x01:
@@ -33,7 +33,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x08:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   PHP,
 		}
 	case 0x09:
@@ -64,7 +64,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x10:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BPL,
 		}
 	case 0x11:
@@ -88,7 +88,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x18:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   CLC,
 		}
 	case 0x19:
@@ -112,7 +112,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x20:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   JSR,
 		}
 	case 0x21:
@@ -142,7 +142,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x28:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   PLP,
 		}
 	case 0x29:
@@ -178,7 +178,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x30:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BMI,
 		}
 	case 0x31:
@@ -202,7 +202,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x38:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   SEC,
 		}
 	case 0x39:
@@ -226,7 +226,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x40:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   RTI,
 		}
 	case 0x41:
@@ -250,7 +250,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x48:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   PHA,
 		}
 	case 0x49:
@@ -286,7 +286,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x50:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BVC,
 		}
 	case 0x51:
@@ -310,7 +310,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x58:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   CLI,
 		}
 	case 0x59:
@@ -334,7 +334,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x60:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   RTS,
 		}
 	case 0x61:
@@ -358,7 +358,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x68:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   PLA,
 		}
 	case 0x69:
@@ -394,7 +394,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x70:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BVS,
 		}
 	case 0x71:
@@ -418,7 +418,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x78:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   SEI,
 		}
 	case 0x79:
@@ -466,13 +466,13 @@ func NewOpcode(code uint8) *opcode {
 	case 0x88:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   DEY,
 		}
 	case 0x8A:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   TXA,
 		}
 	case 0x8C:
@@ -526,7 +526,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x98:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   TYA,
 		}
 	case 0x99:
@@ -538,7 +538,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x9A:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   TXS,
 		}
 	case 0x9D:
@@ -586,7 +586,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xA8:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   TAY,
 		}
 	case 0xA9:
@@ -598,7 +598,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xAA:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   TAX,
 		}
 	case 0xAC:
@@ -622,7 +622,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xB0:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BCS,
 		}
 	case 0xB1:
@@ -652,7 +652,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xB8:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   CLV,
 		}
 	case 0xB9:
@@ -664,7 +664,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xBA:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   TSX,
 		}
 	case 0xBC:
@@ -718,7 +718,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xC8:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   INY,
 		}
 	case 0xC9:
@@ -730,7 +730,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xCA:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   DEX,
 		}
 	case 0xCC:
@@ -754,7 +754,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xD0:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BNE,
 		}
 	case 0xD1:
@@ -778,7 +778,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xD8:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   CLD,
 		}
 	case 0xD9:
@@ -832,7 +832,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xE8:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   INX,
 		}
 	case 0xE9:
@@ -844,7 +844,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xEA:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   NOP,
 		}
 	case 0xEC:
@@ -868,7 +868,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xF0:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   BEQ,
 		}
 	case 0xF1:
@@ -892,7 +892,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xF8:
 		return &opcode{
 			Cycle: 0,
-			Mode:  NIL,
+			Mode:  IMP,
 			Ins:   SED,
 		}
 	case 0xF9:
