@@ -1,7 +1,7 @@
 package bus
 
 type Bus16 struct {
-	Ram [1024 * 64]uint8
+	ram [1024 * 64]uint8
 }
 
 func NewBus16(prg []uint8) *Bus16 {
@@ -10,14 +10,14 @@ func NewBus16(prg []uint8) *Bus16 {
 		ram[index] = code
 	}
 	return &Bus16{
-		Ram: ram,
+		ram: ram,
 	}
 }
 
 func (b *Bus16) Read(add uint16) uint8 {
-	return b.Ram[add]
+	return b.ram[add]
 }
 
 func (b *Bus16) Write(add uint16, data uint8) {
-	b.Ram[add] = data
+	b.ram[add] = data
 }
