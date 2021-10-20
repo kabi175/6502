@@ -24,8 +24,8 @@ func TestStatusRegister(t *testing.T) {
 		{arg: 0b11110000},
 	}
 	for id, test := range tests {
-		test_id := fmt.Sprintf("Test Id:%v", id)
-		t.Run(test_id, func(t *testing.T) {
+		testID := fmt.Sprintf("Test Id:%v", id)
+		t.Run(testID, func(t *testing.T) {
 			sr.SetByte(test.arg)
 			got := sr.Byte()
 			assert.Equal(t, test.arg, got)

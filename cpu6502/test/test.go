@@ -19,8 +19,8 @@ type Cputest struct {
 
 func ProgramTest(t *testing.T, tests []Cputest) {
 	for id, test := range tests {
-		testId := fmt.Sprintf("SubTest_%v", id)
-		t.Run(testId, func(t *testing.T) {
+		testID := fmt.Sprintf("SubTest_%v", id)
+		t.Run(testID, func(t *testing.T) {
 			cpu := NewCpuBuilder(&Config{Prg: test.Prg})
 			cpu.Execute(make(chan bool))
 			assert.Equalf(t, test.A, cpu.A.Get(), "Error A Register")

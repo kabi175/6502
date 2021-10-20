@@ -22,8 +22,8 @@ func TestLittleEndianAddr(t *testing.T) {
 		{low: 0x5f, high: 0x00, addr: 0x005f},
 	}
 	for id, test := range tests {
-		testId := fmt.Sprintf("subtest-%v", id)
-		t.Run(testId, func(t *testing.T) {
+		testID := fmt.Sprintf("subtest-%v", id)
+		t.Run(testID, func(t *testing.T) {
 			got := LittleEndianAddr(test.low, test.high)
 			assert.Equal(t, test.addr, got)
 		})
@@ -46,8 +46,8 @@ func TestIsOverFlow(t *testing.T) {
 		{a: 0xd0, b: 0xd0, exp: false},
 	}
 	for id, test := range tests {
-		testId := fmt.Sprintf("subtest-%v", id)
-		t.Run(testId, func(t *testing.T) {
+		testID := fmt.Sprintf("subtest-%v", id)
+		t.Run(testID, func(t *testing.T) {
 			got := IsOverFlow(test.a, test.b)
 			t.Logf("%X + %X -> %X", test.a, test.b, test.a+test.b)
 			assert.Equal(t, test.exp, got)
@@ -118,8 +118,8 @@ func TestIsCarry(t *testing.T) {
 		{a: 0xd0, b: 0xd0, exp: true},
 	}
 	for id, test := range tests {
-		testId := fmt.Sprintf("subtest-%v", id)
-		t.Run(testId, func(t *testing.T) {
+		testID := fmt.Sprintf("subtest-%v", id)
+		t.Run(testID, func(t *testing.T) {
 			got := IsCarry(test.a, test.b)
 			t.Logf("%X + %X -> %X", test.a, test.b, test.a+test.b)
 			assert.Equal(t, test.exp, got)
