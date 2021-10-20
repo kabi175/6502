@@ -14,7 +14,7 @@ type Config struct {
 }
 
 // Cpu builder package for internal testing
-func NewCpuBuilder(c *Config) *cpu6502.CPU6502 {
+func NewCPUBuilder(c *Config) *cpu6502.CPU6502 {
 	if c.End == 0 {
 		c.End = uint16(len(c.Prg))
 	}
