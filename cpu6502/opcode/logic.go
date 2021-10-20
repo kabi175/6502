@@ -6,7 +6,7 @@ import cpu "github.com/kabi175/6502/cpu6502"
 // M + C + A -> A
 // if DECIMAL Flag enable perform BCD addition
 // Flags: C, V, S, Z
-func (o *opcode) ADC(c *cpu.Cpu6502) uint8 {
+func (o *opcode) ADC(c *cpu.CPU6502) uint8 {
 	carry := uint8(0)
 	if c.Flag.Get(cpu.CARRY) {
 		carry = 1
@@ -36,7 +36,7 @@ func (o *opcode) ADC(c *cpu.Cpu6502) uint8 {
 
 // This is symbolically represented by A & M -> A.
 // Flags: Z, S
-func (o *opcode) AND(c *cpu.Cpu6502) uint8 {
+func (o *opcode) AND(c *cpu.CPU6502) uint8 {
 	src := c.Operand & c.A.Get()
 	c.SET_SIGN(uint16(src))
 	c.SET_ZERO(uint16(src))
@@ -47,7 +47,7 @@ func (o *opcode) AND(c *cpu.Cpu6502) uint8 {
 // Shift 1 bit to left (memory or Reg)
 // STORE opearnd in memory or accumulator depending on addressing mode.
 // Flags: C, Z, S
-func (o *opcode) ASL(c *cpu.Cpu6502) uint8 {
+func (o *opcode) ASL(c *cpu.CPU6502) uint8 {
 	c.SET_CARRY(uint16(c.Operand & 0x80))
 	c.Operand <<= 1
 	c.SET_SIGN(uint16(c.Operand))
@@ -63,7 +63,7 @@ func (o *opcode) ASL(c *cpu.Cpu6502) uint8 {
 
 // Test Bits in Memory with Accumulator
 // FLags: O, Z, S
-func (o *opcode) BIT(c *cpu.Cpu6502) uint8 {
+func (o *opcode) BIT(c *cpu.CPU6502) uint8 {
 	c.SET_SIGN(uint16(c.Operand))
 	c.SET_ZERO(uint16(c.Operand))
 	c.SET_OVERFLOW(c.Operand&0x40 != 0)
@@ -72,7 +72,7 @@ func (o *opcode) BIT(c *cpu.Cpu6502) uint8 {
 
 // Compare Memory and Accumulator
 // Flags: S, Z, C
-func (o *opcode) CMP(c *cpu.Cpu6502) uint8 {
+func (o *opcode) CMP(c *cpu.CPU6502) uint8 {
 	src := uint16(c.A.Get()) - uint16(c.Operand)
 	c.SET_CARRY(src & 0x0100)
 	c.SET_SIGN(src)
@@ -82,7 +82,7 @@ func (o *opcode) CMP(c *cpu.Cpu6502) uint8 {
 
 // Decrement Memory by One
 // Flags S, C
-func (O *opcode) DEC(c *cpu.Cpu6502) uint8 {
+func (O *opcode) DEC(c *cpu.CPU6502) uint8 {
 	src := (c.Operand - 1) & 0xff
 	c.SET_SIGN(uint16(src))
 	c.SET_ZERO(uint16(src))
@@ -92,7 +92,7 @@ func (O *opcode) DEC(c *cpu.Cpu6502) uint8 {
 
 // XOR Memory with Accumulator
 // Flags S, C
-func (o *opcode) EOR(c *cpu.Cpu6502) uint8 {
+func (o *opcode) EOR(c *cpu.CPU6502) uint8 {
 	src := (c.Operand ^ c.A.Get())
 	c.SET_SIGN(uint16(src))
 	c.SET_ZERO(uint16(src))
@@ -102,7 +102,7 @@ func (o *opcode) EOR(c *cpu.Cpu6502) uint8 {
 
 // Shift Right One Bit (Memory or Accumulator)
 //Flags C, Z, S
-func (o *opcode) LSR(c *cpu.Cpu6502) uint8 {
+func (o *opcode) LSR(c *cpu.CPU6502) uint8 {
 	c.SET_CARRY(uint16(c.Operand & 0x01))
 	c.Operand <<= 1
 	c.SET_SIGN(uint16(c.Operand))
@@ -118,7 +118,7 @@ func (o *opcode) LSR(c *cpu.Cpu6502) uint8 {
 
 // OR memory with A reg
 // Flags S, Z
-func (o *opcode) ORA(c *cpu.Cpu6502) uint8 {
+func (o *opcode) ORA(c *cpu.CPU6502) uint8 {
 	c.Operand |= c.A.Get()
 	c.SET_SIGN(uint16(c.Operand))
 	c.SET_ZERO(uint16(c.Operand))
@@ -128,7 +128,7 @@ func (o *opcode) ORA(c *cpu.Cpu6502) uint8 {
 
 // Rotate One Bit Left (Memory or Accumulator)
 // Flags S, Z, C
-func (o *opcode) ROL(c *cpu.Cpu6502) uint8 {
+func (o *opcode) ROL(c *cpu.CPU6502) uint8 {
 	src := uint16(c.Operand) << 1
 	if c.Flag.Get(cpu.CARRY) {
 		src |= 0x1
@@ -148,7 +148,7 @@ func (o *opcode) ROL(c *cpu.Cpu6502) uint8 {
 
 // Rotate One Bit Right (Memory or Accumulator)
 // Flags S, Z, C
-func (o *opcode) ROR(c *cpu.Cpu6502) uint8 {
+func (o *opcode) ROR(c *cpu.CPU6502) uint8 {
 	src := uint16(c.Operand)
 	if c.Flag.Get(cpu.CARRY) {
 		src |= 0x100
@@ -168,7 +168,7 @@ func (o *opcode) ROR(c *cpu.Cpu6502) uint8 {
 
 // Subtract Memory from Accumulator with Borrow
 // Flags S, Z, V, C
-func (o *opcode) SBC(c *cpu.Cpu6502) uint8 {
+func (o *opcode) SBC(c *cpu.CPU6502) uint8 {
 	temp := uint16(c.A.Get()) - uint16(c.Operand)
 	if !c.Flag.Get(cpu.CARRY) {
 		temp++

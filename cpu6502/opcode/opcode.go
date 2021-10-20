@@ -89,7 +89,7 @@ type opcode struct {
 	Cycle uint8
 	Mode  ADDRMODE
 	Ins   INSTRUCTION
-	cpu   *cpu.Cpu6502
+	cpu   *cpu.CPU6502
 }
 
 func (o *opcode) Execute() uint8 {

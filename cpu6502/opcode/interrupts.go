@@ -4,7 +4,7 @@ import cpu "github.com/kabi175/6502/cpu6502"
 
 // Force Break
 // Flags - I, B
-func (*opcode) BRK(c *cpu.Cpu6502) uint8 {
+func (*opcode) BRK(c *cpu.CPU6502) uint8 {
 	c.PC.Increment()
 	c.PUSH(uint8(c.PC.Get() >> 8))
 	c.PUSH(uint8(c.PC.Get() & 0xff))
@@ -17,7 +17,7 @@ func (*opcode) BRK(c *cpu.Cpu6502) uint8 {
 
 // Return from Interrupt
 // Flags - nil
-func (*opcode) RTI(c *cpu.Cpu6502) uint8 {
+func (*opcode) RTI(c *cpu.CPU6502) uint8 {
 	src := uint16(c.PULL())
 	c.SP.Set(src)
 	src = uint16(c.PULL())
@@ -26,6 +26,6 @@ func (*opcode) RTI(c *cpu.Cpu6502) uint8 {
 }
 
 // NO Operations
-func (*opcode) NOP(c *cpu.Cpu6502) uint8 {
+func (*opcode) NOP(c *cpu.CPU6502) uint8 {
 	return 0
 }

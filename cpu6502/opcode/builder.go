@@ -5,14 +5,14 @@ import (
 	"github.com/kabi175/6502/model"
 )
 
-func NewOpcodeBuilder(cpu *cpu6502.Cpu6502) *OpcodeBuilder {
+func NewOpcodeBuilder(cpu *cpu6502.CPU6502) *OpcodeBuilder {
 	return &OpcodeBuilder{
 		cpu: cpu,
 	}
 }
 
 type OpcodeBuilder struct {
-	cpu *cpu6502.Cpu6502
+	cpu *cpu6502.CPU6502
 }
 
 func (b *OpcodeBuilder) Build(opcodeHex uint8) model.Opcode {
