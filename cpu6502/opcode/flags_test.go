@@ -77,3 +77,16 @@ func TestCarry(t *testing.T) {
 	}
 	test.ProgramTest(t, tests)
 }
+
+func TestOverflow(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xf8, 0xa9, 0x9a, 0x69, 0xbc, 0xb8},
+			PC:   uint16(0x06),
+			Flag: 0b10101001,
+			SP:   uint8(0xFF),
+			A:    uint8(0xBC),
+		},
+	}
+	test.ProgramTest(t, tests)
+}
