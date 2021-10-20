@@ -14,10 +14,10 @@ jobs:
               with:
                   go-version: ${{ matrix.go }}
               if: matrix.os == 'ubuntu-latest'
-            - run: sudo apt update && sudo apt install -y --no-install-recommends libsdl2{,-image,-mixer,-ttf,-gfx}-dev
+              env:
+                CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
             - run: go test ./...
             - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic
-            - env:
-                CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+            
             - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.txt
 
