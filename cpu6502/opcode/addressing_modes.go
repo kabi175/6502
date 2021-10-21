@@ -7,6 +7,7 @@ In this mode, instruction operaties on data on accumulator.
 No operations are needed.
 */
 func (*opcode) ACC(c *cpu.CPU6502) uint8 {
+	c.Operand = c.A.Get()
 	// No operations are  needed
 	return 0
 }
