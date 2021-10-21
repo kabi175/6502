@@ -622,7 +622,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xB0:
 		return &opcode{
 			Cycle: 0,
-			Mode:  IMP,
+			Mode:  REL,
 			Ins:   BCS,
 		}
 	case 0xB1:
