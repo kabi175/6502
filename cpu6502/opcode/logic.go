@@ -136,16 +136,19 @@ func (o *opcode) ROL(c *cpu.CPU6502) uint8 {
 	if c.Flag.Get(cpu.CARRY) {
 		src |= 0x1
 	}
-	c.SET_CARRY(src & 0x00)
+	c.SET_CARRY(0)
+	if src > 0xFF {
+		c.SET_CARRY(1)
+	}
 	src &= 0xff
-	c.SET_SIGN(uint16(c.Operand))
-	c.SET_ZERO(uint16(c.Operand))
+	c.SET_SIGN(src)
+	c.SET_ZERO(src)
 	// Store Operand in memory or in A reg
 	if o.Mode == ACC {
-		c.A.Set(c.Operand)
+		c.A.Set(uint8(src))
 		return 0
 	}
-	c.Write(c.Addr, c.Operand)
+	c.Write(c.Addr, uint8(src))
 	return 0
 }
 
@@ -158,24 +161,25 @@ func (o *opcode) ROR(c *cpu.CPU6502) uint8 {
 	}
 	c.SET_CARRY(src & 0x01)
 	src >>= 1
-	c.SET_SIGN(uint16(c.Operand))
-	c.SET_ZERO(uint16(c.Operand))
+	c.SET_SIGN(src)
+	c.SET_ZERO(src)
 	// Store Operand in memory or in A reg
 	if o.Mode == ACC {
-		c.A.Set(c.Operand)
+		c.A.Set(uint8(src))
 		return 0
 	}
-	c.Write(c.Addr, c.Operand)
+	c.Write(c.Addr, uint8(src))
 	return 0
 }
 
 // Subtract Memory from Accumulator with Borrow
 // Flags S, Z, V, C
 func (o *opcode) SBC(c *cpu.CPU6502) uint8 {
-	temp := uint16(c.A.Get()) - uint16(c.Operand)
-	if !c.Flag.Get(cpu.CARRY) {
-		temp++
+	carry := 1
+	if c.Flag.Get(cpu.CARRY) {
+		carry = 0
 	}
+	temp := uint16(c.A.Get()) - uint16(c.Operand) - uint16(carry)
 	c.SET_SIGN(temp)
 	c.SET_ZERO(temp & 0xff)
 	c.SET_OVERFLOW((((uint16(c.A.Get())^temp)&0x80) != 0 && ((c.A.Get()^c.Operand)&0x80) != 0))
@@ -191,7 +195,10 @@ func (o *opcode) SBC(c *cpu.CPU6502) uint8 {
 			temp -= 0x60
 		}
 	}
-	c.SET_CARRY(temp & 0x00)
+	c.SET_CARRY(0)
+	if temp < 0x100 {
+		c.SET_CARRY(1)
+	}
 	c.A.Set(uint8(temp & 0xff))
 	return 0
 }
