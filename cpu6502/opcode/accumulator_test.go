@@ -204,3 +204,120 @@ func TestCMP(t *testing.T) {
 	}
 	test.ProgramTest(t, tests)
 }
+
+func TestDEC(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa4, 0x85, 0xf0, 0xc6, 0xf0, 0xa5, 0xf0},
+			A:    0xA3,
+			PC:   0x08,
+			SP:   0xFF,
+			Flag: 0b10100000,
+		},
+		{
+			Prg:  []uint8{0xa9, 0x00, 0x85, 0xf0, 0xc6, 0xf0, 0xa5, 0xf0},
+			A:    0xFF,
+			PC:   0x08,
+			SP:   0xFF,
+			Flag: 0b10100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+func TestEOR(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa4, 0x85, 0xf0, 0xa9, 0x45, 0x45, 0xf0},
+			A:    0xE1,
+			PC:   0x08,
+			SP:   0xFF,
+			Flag: 0b10100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+func TestLSR(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x4a},
+			A:    0x51,
+			PC:   0x03,
+			SP:   0xFF,
+			Flag: 0b00100000,
+		},
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x85, 0xf0, 0x46, 0xf0, 0xa5, 0xf0},
+			A:    0x51,
+			PC:   0x08,
+			SP:   0xFF,
+			Flag: 0b00100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+
+func TestORA(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x85, 0xf0, 0x46, 0xf0, 0x05, 0xf0},
+			A:    0xF3,
+			PC:   0x08,
+			SP:   0xFF,
+			Flag: 0b10100000,
+		},
+		{
+			Prg:  []uint8{0xa9, 0x00, 0x85, 0xf0, 0x46, 0xf0, 0x05, 0xf0},
+			A:    0x00,
+			PC:   0x08,
+			SP:   0xFF,
+			Flag: 0b00100010,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+
+func TestROL(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x2a},
+			A:    0x44,
+			PC:   0x03,
+			SP:   0xFF,
+			Flag: 0b00100001,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+
+func TestROR(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0x6a},
+			A:    0x51,
+			PC:   0x03,
+			SP:   0xFF,
+			Flag: 0b00100000,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+func TestSBC(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa2, 0xe9, 0x34},
+			A:    0x6d,
+			PC:   0x04,
+			SP:   0xFF,
+			Flag: 0b01100001,
+		},
+		//  Decimal Mode
+		{
+			Prg:  []uint8{0xf8, 0xa9, 0xa2, 0xe9, 0x34},
+			A:    0x67,
+			PC:   0x05,
+			SP:   0xFF,
+			Flag: 0b01101001,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
