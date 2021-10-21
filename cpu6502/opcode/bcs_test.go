@@ -6,7 +6,7 @@ import (
 	"github.com/kabi175/6502/cpu6502/test"
 )
 
-func TestBCS_IMM(t *testing.T) {
+func TestBCS(t *testing.T) {
 	tests := []test.Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xff, 0x69, 0x01, 0xb0, 0x03, 0x4c, 0x02, 0x00, 0x85, 0xf0},
