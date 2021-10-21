@@ -65,7 +65,7 @@ func (o *opcode) ASL(c *cpu.CPU6502) uint8 {
 // FLags: O, Z, S
 func (o *opcode) BIT(c *cpu.CPU6502) uint8 {
 	c.SET_SIGN(uint16(c.Operand))
-	c.SET_ZERO(uint16(c.Operand))
+	c.SET_ZERO(uint16(c.Operand) & uint16(c.A.Get()))
 	c.SET_OVERFLOW(c.Operand&0x40 != 0)
 	return 0
 }
