@@ -74,7 +74,10 @@ func (o *opcode) BIT(c *cpu.CPU6502) uint8 {
 // Flags: S, Z, C
 func (o *opcode) CMP(c *cpu.CPU6502) uint8 {
 	src := uint16(c.A.Get()) - uint16(c.Operand)
-	c.SET_CARRY(src & 0x0100)
+	c.SET_CARRY(0)
+	if src < 0x100 {
+		c.SET_CARRY(1)
+	}
 	c.SET_SIGN(src)
 	c.SET_ZERO(src & 0x00ff)
 	return 0
@@ -96,7 +99,7 @@ func (o *opcode) EOR(c *cpu.CPU6502) uint8 {
 	src := (c.Operand ^ c.A.Get())
 	c.SET_SIGN(uint16(src))
 	c.SET_ZERO(uint16(src))
-	c.Write(c.Addr, src)
+	c.A.Set(src)
 	return 0
 }
 
@@ -104,7 +107,7 @@ func (o *opcode) EOR(c *cpu.CPU6502) uint8 {
 //Flags C, Z, S
 func (o *opcode) LSR(c *cpu.CPU6502) uint8 {
 	c.SET_CARRY(uint16(c.Operand & 0x01))
-	c.Operand <<= 1
+	c.Operand >>= 1
 	c.SET_SIGN(uint16(c.Operand))
 	c.SET_ZERO(uint16(c.Operand))
 	// Store Operand in memory or in A reg
