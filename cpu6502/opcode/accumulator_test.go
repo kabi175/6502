@@ -191,3 +191,16 @@ func TestBIT(t *testing.T) {
 	}
 	test.ProgramTest(t, tests)
 }
+
+func TestCMP(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xa4, 0x85, 0xf0, 0xa9, 0xc6, 0xc5, 0xf0},
+			A:    0xC6,
+			PC:   0x08,
+			SP:   0xFF,
+			Flag: 0b00100001,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
