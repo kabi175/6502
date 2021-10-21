@@ -5,7 +5,7 @@ import cpu "github.com/kabi175/6502/cpu6502"
 func (o *opcode) BCC(c *cpu.CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
 	if !c.Flag.Get(cpu.CARRY) {
-		c.PC.Set(c.PC.Get() + c.Addr)
+		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
 		return 2
