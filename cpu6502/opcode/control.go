@@ -38,7 +38,7 @@ func (o *opcode) BEQ(c *cpu.CPU6502) uint8 {
 func (o *opcode) BMI(c *cpu.CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
 	if c.Flag.Get(cpu.SIGN) {
-		c.PC.Set(c.PC.Get() + c.Addr)
+		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
 		return 2
@@ -49,7 +49,7 @@ func (o *opcode) BMI(c *cpu.CPU6502) uint8 {
 func (o *opcode) BNE(c *cpu.CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
 	if !c.Flag.Get(cpu.ZERO) {
-		c.PC.Set(c.PC.Get() + c.Addr)
+		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
 		return 2
@@ -60,7 +60,7 @@ func (o *opcode) BNE(c *cpu.CPU6502) uint8 {
 func (o *opcode) BPL(c *cpu.CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
 	if !c.Flag.Get(cpu.SIGN) {
-		c.PC.Set(c.PC.Get() + c.Addr)
+		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
 		return 2
@@ -71,7 +71,7 @@ func (o *opcode) BPL(c *cpu.CPU6502) uint8 {
 func (*opcode) BVC(c *cpu.CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
 	if !c.Flag.Get(cpu.OVERFLOW) {
-		c.PC.Set(c.PC.Get() + c.Addr)
+		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
 		return 2
@@ -82,7 +82,7 @@ func (*opcode) BVC(c *cpu.CPU6502) uint8 {
 func (*opcode) BVS(c *cpu.CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
 	if c.Flag.Get(cpu.OVERFLOW) {
-		c.PC.Set(c.PC.Get() + c.Addr)
+		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
 		return 2
