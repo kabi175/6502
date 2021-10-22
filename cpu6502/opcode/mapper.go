@@ -64,7 +64,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x10:
 		return &opcode{
 			Cycle: 0,
-			Mode:  IMP,
+			Mode:  REL,
 			Ins:   BPL,
 		}
 	case 0x11:
@@ -178,7 +178,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x30:
 		return &opcode{
 			Cycle: 0,
-			Mode:  IMP,
+			Mode:  REL,
 			Ins:   BMI,
 		}
 	case 0x31:
