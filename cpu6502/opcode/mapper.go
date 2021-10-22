@@ -754,7 +754,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0xD0:
 		return &opcode{
 			Cycle: 0,
-			Mode:  IMP,
+			Mode:  REL,
 			Ins:   BNE,
 		}
 	case 0xD1:
