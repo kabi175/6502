@@ -128,3 +128,12 @@ func TestJSR(t *testing.T) {
 	}
 	test.ProgramTest(t, tests)
 }
+
+func TestRTS(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg: []uint8{},
+		},
+	}
+	test.ProgramTest(t, tests)
+}
