@@ -60,6 +60,19 @@ func TestBNI(t *testing.T) {
 	}
 	test.ProgramTest(t, tests)
 }
+func TestBNE(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0x01, 0xd0, 0x03, 0x4c, 0x02, 0x00, 0xa9, 0x00},
+			SP:   0xFF,
+			A:    0x00,
+			PC:   0x09,
+			End:  0x09,
+			Flag: 0b00100010,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
 func TestBPL(t *testing.T) {
 	tests := []test.Cputest{
 		{
@@ -72,4 +85,36 @@ func TestBPL(t *testing.T) {
 		},
 	}
 	test.ProgramTest(t, tests)
+}
+
+func TestBVC(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0x01, 0x50, 0x03, 0x4c, 0x02, 0x00, 0xa9, 0x00},
+			SP:   0xFF,
+			A:    0x00,
+			PC:   0x09,
+			End:  0x09,
+			Flag: 0b00100010,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+
+func TestBVS(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0x01, 0x69, 0x01, 0x70, 0x03, 0x4c, 0x02, 0x00, 0xa9, 0x00},
+			SP:   0xFF,
+			A:    0x00,
+			PC:   0x0B,
+			End:  0x0B,
+			Flag: 0b01100010,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+
+func TestJSR(t *testing.T) {
+
 }
