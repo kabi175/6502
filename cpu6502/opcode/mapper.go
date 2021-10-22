@@ -112,7 +112,7 @@ func NewOpcode(code uint8) *opcode {
 	case 0x20:
 		return &opcode{
 			Cycle: 0,
-			Mode:  IMP,
+			Mode:  ABS,
 			Ins:   JSR,
 		}
 	case 0x21:
