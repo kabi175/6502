@@ -47,3 +47,29 @@ func TestBEQ(t *testing.T) {
 	}
 	test.ProgramTest(t, tests)
 }
+func TestBNI(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0x0f, 0x69, 0x01, 0x30, 0x03, 0x4c, 0x02, 0x00, 0xa9, 0x00},
+			SP:   0xFF,
+			A:    0x00,
+			PC:   0x0B,
+			End:  0x0B,
+			Flag: 0b01100010,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
+func TestBPL(t *testing.T) {
+	tests := []test.Cputest{
+		{
+			Prg:  []uint8{0xa9, 0xff, 0xe9, 0x01, 0x10, 0x03, 0x4c, 0x02, 0x00, 0xa9, 0x00},
+			SP:   0xFF,
+			A:    0x00,
+			PC:   0x0B,
+			End:  0x0B,
+			Flag: 0b01100011,
+		},
+	}
+	test.ProgramTest(t, tests)
+}
