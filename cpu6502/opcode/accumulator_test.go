@@ -301,6 +301,7 @@ func TestROR(t *testing.T) {
 	}
 	test.ProgramTest(t, tests)
 }
+
 func TestSBC(t *testing.T) {
 	tests := []test.Cputest{
 		{
