@@ -17,17 +17,8 @@ type CPU6502 struct {
 	Bus     model.Bus16
 	deb     model.Debugger
 
+	isRunning bool
 	*util.Observer
-}
-
-// Helper function to check the channel for new message or chan close
-func isClosed(close chan bool) bool {
-	select {
-	case <-close:
-		return true
-	default:
-		return false
-	}
 }
 
 /*
@@ -41,7 +32,8 @@ func isClosed(close chan bool) bool {
 */
 func (c *CPU6502) Execute(close chan bool) {
 	c.Reset()
-	for !isClosed(close) {
+	c.isRunning = true
+	for c.isRunning {
 		hexCode := c.Fetch()
 		opcode := NewOpcode(hexCode)
 		opcode.Execute(c)
@@ -116,12 +108,12 @@ func (c *CPU6502) SET_DECIMAL(val uint16) {
 	c.Flag.Set(DECIMAL, val != 0)
 }
 
-func (c *CPU6502) PUSH(byte uint8) {
+func (c *CPU6502) push(byte uint8) {
 	c.Write(0x0100|c.SP.Get(), byte)
 	c.SP.Decrement()
 }
 
-func (c *CPU6502) PULL() uint8 {
+func (c *CPU6502) pull() uint8 {
 	c.SP.Increment()
 	return c.Read(0x0100 | c.SP.Get())
 }

@@ -15,7 +15,6 @@ func newCPU(bus model.Bus16, deb model.Debugger) *CPU6502 {
 		Y:    NewGP8(),
 
 		Bus: bus,
-
 		deb: deb,
 	}
 }
