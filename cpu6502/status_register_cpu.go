@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/kabi175/6502/model"
+	"github.com/kabi175/6502/util"
 )
 
 const (
@@ -26,10 +27,15 @@ type flagRegister struct {
 	unused    bool
 	overflow  bool
 	sign      bool
+
+	*util.Observer
 }
 
 func NewFlagRegister() model.FlagRegister {
-	return &flagRegister{}
+	obj := &flagRegister{
+		Observer: util.NewObserver(),
+	}
+	return obj
 }
 
 func (fr *flagRegister) Set(flag int, state bool) {

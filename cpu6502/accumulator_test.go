@@ -1,14 +1,11 @@
-package opcode_test
+package cpu6502
 
 import (
 	"testing"
-
-	"github.com/kabi175/6502/cpu6502/opcode"
-	"github.com/kabi175/6502/cpu6502/test"
 )
 
 func TestADC(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		// NON Decial Mode Test
 		{
 			Prg:  []uint8{0x69, 0x10},
@@ -103,11 +100,11 @@ func TestADC(t *testing.T) {
 			Flag: 0b10100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestAND(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0x2a, 0x29, 0x32},
 			SP:   uint8(0xff),
@@ -137,23 +134,23 @@ func TestAND(t *testing.T) {
 			Flag: 0b10100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 
 	// Zero page
-	test.OpcodeTest(t, 0x25, opcode.AND, opcode.ZPA)
-	test.OpcodeTest(t, 0x35, opcode.AND, opcode.ZPX)
+	OpcodeTest(t, 0x25, AND, ZPA)
+	OpcodeTest(t, 0x35, AND, ZPX)
 
 	// Absolute Mode
-	test.OpcodeTest(t, 0x2D, opcode.AND, opcode.ABS)
-	test.OpcodeTest(t, 0x3D, opcode.AND, opcode.ABX)
-	test.OpcodeTest(t, 0x39, opcode.AND, opcode.ABY)
+	OpcodeTest(t, 0x2D, AND, ABS)
+	OpcodeTest(t, 0x3D, AND, ABX)
+	OpcodeTest(t, 0x39, AND, ABY)
 	// Relative Indexed
-	test.OpcodeTest(t, 0x21, opcode.AND, opcode.IDX)
-	test.OpcodeTest(t, 0x31, opcode.AND, opcode.IDY)
+	OpcodeTest(t, 0x21, AND, IDX)
+	OpcodeTest(t, 0x31, AND, IDY)
 }
 
 func Test_ASL(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0x34, 0x0a},
 			A:    uint8(0x68),
@@ -169,11 +166,11 @@ func Test_ASL(t *testing.T) {
 			Flag: 0b10100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestBIT(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xf3, 0x85, 0xf0, 0x24, 0xf0},
 			A:    0xF3,
@@ -189,11 +186,11 @@ func TestBIT(t *testing.T) {
 			Flag: 0b10100010,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestCMP(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa4, 0x85, 0xf0, 0xa9, 0xc6, 0xc5, 0xf0},
 			A:    0xC6,
@@ -202,11 +199,11 @@ func TestCMP(t *testing.T) {
 			Flag: 0b00100001,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestDEC(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa4, 0x85, 0xf0, 0xc6, 0xf0, 0xa5, 0xf0},
 			A:    0xA3,
@@ -222,10 +219,10 @@ func TestDEC(t *testing.T) {
 			Flag: 0b10100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 func TestEOR(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa4, 0x85, 0xf0, 0xa9, 0x45, 0x45, 0xf0},
 			A:    0xE1,
@@ -234,10 +231,10 @@ func TestEOR(t *testing.T) {
 			Flag: 0b10100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 func TestLSR(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa2, 0x4a},
 			A:    0x51,
@@ -253,11 +250,11 @@ func TestLSR(t *testing.T) {
 			Flag: 0b00100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestORA(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa2, 0x85, 0xf0, 0x46, 0xf0, 0x05, 0xf0},
 			A:    0xF3,
@@ -273,11 +270,11 @@ func TestORA(t *testing.T) {
 			Flag: 0b00100010,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestROL(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa2, 0x2a},
 			A:    0x44,
@@ -286,11 +283,11 @@ func TestROL(t *testing.T) {
 			Flag: 0b00100001,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestROR(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa2, 0x6a},
 			A:    0x51,
@@ -299,11 +296,11 @@ func TestROR(t *testing.T) {
 			Flag: 0b00100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestSBC(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xa9, 0xa2, 0xe9, 0x34},
 			A:    0x6d,
@@ -320,5 +317,5 @@ func TestSBC(t *testing.T) {
 			Flag: 0b01101001,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }

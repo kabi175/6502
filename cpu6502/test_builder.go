@@ -1,11 +1,13 @@
-package test
+package cpu6502
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/kabi175/6502/cpu6502/opcode"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/kabi175/6502/bus"
+	"github.com/kabi175/6502/cpu6502/debugger"
 )
 
 type Cputest struct {
@@ -17,6 +19,25 @@ type Cputest struct {
 	Y    uint8
 	A    uint8
 	End  uint16
+}
+
+type Config struct {
+	Prg    []uint8
+	Breaks []uint16
+	End    uint16
+}
+
+// Cpu builder package for internal testing
+func NewCPUBuilder(c *Config) *CPU6502 {
+	if c.End == 0 {
+		c.End = uint16(len(c.Prg))
+	}
+	bus := bus.NewBus16(c.Prg)
+	deb := debugger.NewDebugger(c.Breaks, c.End)
+	cpu := newCPU(bus, deb)
+	opcodeBuilder := NewOpcodeBuilder(cpu)
+	cpu.AttachOpcodeBuilder(opcodeBuilder)
+	return cpu
 }
 
 func ProgramTest(t *testing.T, tests []Cputest) {
@@ -35,8 +56,8 @@ func ProgramTest(t *testing.T, tests []Cputest) {
 	}
 }
 
-func OpcodeTest(t *testing.T, hex uint8, ins opcode.INSTRUCTION, mode opcode.ADDRMODE) {
-	got := opcode.NewOpcode(hex)
+func OpcodeTest(t *testing.T, hex uint8, ins INSTRUCTION, mode ADDRMODE) {
+	got := NewOpcode(hex)
 	assert.Equal(t, ins, got.Ins, "Invalid Instruction")
 	assert.Equal(t, mode, got.Mode, "Invalid Addressing Mode")
 }

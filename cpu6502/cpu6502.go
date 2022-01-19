@@ -2,6 +2,7 @@ package cpu6502
 
 import (
 	"github.com/kabi175/6502/model"
+	"github.com/kabi175/6502/util"
 )
 
 type CPU6502 struct {
@@ -15,8 +16,9 @@ type CPU6502 struct {
 	X             model.GP8
 	Y             model.GP8
 	Bus           model.Bus16
-	eventQueue    model.EventQueue
 	deb           model.Debugger
+
+	*util.Observer
 }
 
 func (c *CPU6502) AttachOpcodeBuilder(builder model.OpcodeBuilder) *CPU6502 {

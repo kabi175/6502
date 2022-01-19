@@ -1,10 +1,8 @@
-package opcode
+package cpu6502
 
-import cpu "github.com/kabi175/6502/cpu6502"
-
-func (o *opcode) BCC(c *cpu.CPU6502) uint8 {
+func (o *opcode) BCC(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if !c.Flag.Get(cpu.CARRY) {
+	if !c.Flag.Get(CARRY) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -13,9 +11,9 @@ func (o *opcode) BCC(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (o *opcode) BCS(c *cpu.CPU6502) uint8 {
+func (o *opcode) BCS(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if c.Flag.Get(cpu.CARRY) {
+	if c.Flag.Get(CARRY) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -24,9 +22,9 @@ func (o *opcode) BCS(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (o *opcode) BEQ(c *cpu.CPU6502) uint8 {
+func (o *opcode) BEQ(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if c.Flag.Get(cpu.ZERO) {
+	if c.Flag.Get(ZERO) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -35,9 +33,9 @@ func (o *opcode) BEQ(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (o *opcode) BMI(c *cpu.CPU6502) uint8 {
+func (o *opcode) BMI(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if c.Flag.Get(cpu.SIGN) {
+	if c.Flag.Get(SIGN) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -46,9 +44,9 @@ func (o *opcode) BMI(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (o *opcode) BNE(c *cpu.CPU6502) uint8 {
+func (o *opcode) BNE(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if !c.Flag.Get(cpu.ZERO) {
+	if !c.Flag.Get(ZERO) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -57,9 +55,9 @@ func (o *opcode) BNE(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (o *opcode) BPL(c *cpu.CPU6502) uint8 {
+func (o *opcode) BPL(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if !c.Flag.Get(cpu.SIGN) {
+	if !c.Flag.Get(SIGN) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -68,9 +66,9 @@ func (o *opcode) BPL(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (*opcode) BVC(c *cpu.CPU6502) uint8 {
+func (*opcode) BVC(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if !c.Flag.Get(cpu.OVERFLOW) {
+	if !c.Flag.Get(OVERFLOW) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -79,9 +77,9 @@ func (*opcode) BVC(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (*opcode) BVS(c *cpu.CPU6502) uint8 {
+func (*opcode) BVS(c *CPU6502) uint8 {
 	isPageCrossed := ((c.PC.Get() & 0xFF00) != (c.PC.Get()+c.Addr)&0xFF00)
-	if c.Flag.Get(cpu.OVERFLOW) {
+	if c.Flag.Get(OVERFLOW) {
 		c.PC.Set(c.PC.Get() + uint16(c.Operand))
 	}
 	if isPageCrossed {
@@ -90,12 +88,12 @@ func (*opcode) BVS(c *cpu.CPU6502) uint8 {
 	return 1
 }
 
-func (*opcode) JMP(c *cpu.CPU6502) uint8 {
+func (*opcode) JMP(c *CPU6502) uint8 {
 	c.PC.Set(c.Addr)
 	return 0
 }
 
-func (*opcode) JSR(c *cpu.CPU6502) uint8 {
+func (*opcode) JSR(c *CPU6502) uint8 {
 	c.PC.Decrement()
 	c.PUSH(uint8(c.PC.Get() >> 8))
 	c.PUSH(uint8(c.PC.Get()))
@@ -103,7 +101,7 @@ func (*opcode) JSR(c *cpu.CPU6502) uint8 {
 	return 0
 }
 
-func (*opcode) RTS(c *cpu.CPU6502) uint8 {
+func (*opcode) RTS(c *CPU6502) uint8 {
 	src := uint16(c.PULL())
 	src += ((uint16(c.PULL()) << 8) + 1)
 	c.PC.Set(src)

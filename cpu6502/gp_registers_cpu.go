@@ -1,14 +1,20 @@
 package cpu6502
 
-import "github.com/kabi175/6502/model"
+import (
+	"github.com/kabi175/6502/model"
+	"github.com/kabi175/6502/util"
+)
 
 type GP8Register struct {
 	data uint8
+
+	*util.Observer
 }
 
 func NewGP8() model.GP8 {
 	return &GP8Register{
-		data: 0,
+		data:     0,
+		Observer: util.NewObserver(),
 	}
 }
 

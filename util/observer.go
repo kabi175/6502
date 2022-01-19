@@ -1,32 +1,37 @@
 package util
 
-type Subject interface {
-	OnStateChange()
+import (
+	"github.com/kabi175/6502/model"
+)
+
+type subject struct {
+	callback func(model.State)
 }
 
-type Observer interface {
-	Subscribe(Subject)
-	UnSubscribe(Subject)
+type Observer struct {
+	subjects []*subject
 }
 
-type ObserverImp struct {
-	subjects []Subject
+func NewObserver() *Observer {
+	return &Observer{}
 }
 
-func (o *ObserverImp) Subscribe(s Subject) {
-	o.subjects = append(o.subjects, s)
-}
-
-func (o *ObserverImp) UnSubscribe(s Subject) {
-	for index, sub := range o.subjects {
-		if sub == s {
-			o.subjects = remove(o.subjects, index)
-			return
+func (o *Observer) Subscribe(callback func(model.State)) (func(), error) {
+	sub := &subject{callback}
+	o.subjects = append(o.subjects, sub)
+	return func() {
+		for i, iter := range o.subjects {
+			if sub == iter {
+				o.subjects = append(o.subjects[:i], o.subjects[i+1:]...)
+				break
+			}
 		}
-	}
+	}, nil
 }
 
-func remove(s []Subject, index int) []Subject {
-	s[index] = s[len(s)-1]
-	return s[:len(s)-1]
+func (o *Observer) Publish(state model.State) error {
+	for _, sub := range o.subjects {
+		sub.callback(state)
+	}
+	return nil
 }

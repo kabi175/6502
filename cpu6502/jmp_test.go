@@ -1,13 +1,11 @@
-package opcode_test
+package cpu6502
 
 import (
 	"testing"
-
-	"github.com/kabi175/6502/cpu6502/test"
 )
 
 func TestJMP(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0x4c, 0x23, 0x23},
 			PC:   uint16(0x2323),
@@ -16,5 +14,5 @@ func TestJMP(t *testing.T) {
 			End:  uint16(0x2323),
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }

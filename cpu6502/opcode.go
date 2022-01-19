@@ -1,8 +1,4 @@
-package opcode
-
-import (
-	cpu "github.com/kabi175/6502/cpu6502"
-)
+package cpu6502
 
 type ADDRMODE string
 type INSTRUCTION string
@@ -88,7 +84,7 @@ type opcode struct {
 	Cycle uint8
 	Mode  ADDRMODE
 	Ins   INSTRUCTION
-	cpu   *cpu.CPU6502
+	cpu   *CPU6502
 }
 
 func (o *opcode) Execute() uint8 {

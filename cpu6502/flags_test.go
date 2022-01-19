@@ -1,13 +1,11 @@
-package opcode_test
+package cpu6502
 
 import (
 	"testing"
-
-	"github.com/kabi175/6502/cpu6502/test"
 )
 
 func TestInterrupt(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0x78},
 			PC:   uint16(0x01),
@@ -27,11 +25,11 @@ func TestInterrupt(t *testing.T) {
 			Flag: 0b00100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestDecimal(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xf8},
 			PC:   uint16(0x01),
@@ -51,11 +49,11 @@ func TestDecimal(t *testing.T) {
 			Flag: 0b00100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestCarry(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0x38},
 			PC:   uint16(0x01),
@@ -75,11 +73,11 @@ func TestCarry(t *testing.T) {
 			Flag: 0b00100000,
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }
 
 func TestOverflow(t *testing.T) {
-	tests := []test.Cputest{
+	tests := []Cputest{
 		{
 			Prg:  []uint8{0xf8, 0xa9, 0x9a, 0x69, 0xbc, 0xb8},
 			PC:   uint16(0x06),
@@ -88,5 +86,5 @@ func TestOverflow(t *testing.T) {
 			A:    uint8(0xBC),
 		},
 	}
-	test.ProgramTest(t, tests)
+	ProgramTest(t, tests)
 }

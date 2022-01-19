@@ -3,13 +3,14 @@ package cpu6502
 import (
 	"testing"
 
-	"github.com/kabi175/6502/bus"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/kabi175/6502/bus"
 )
 
 func TestStackPointer(t *testing.T) {
 	bus := bus.NewBus16([]uint8{})
-	cpu := NewCPU(bus, nil)
+	cpu := newCPU(bus, nil)
 	t.Run("InitialValue", func(t *testing.T) {
 		assert.Equal(t, uint16(0x00FF), cpu.SP.Get())
 	})

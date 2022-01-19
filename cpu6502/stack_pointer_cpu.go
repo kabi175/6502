@@ -1,14 +1,19 @@
 package cpu6502
 
-import "github.com/kabi175/6502/model"
+import (
+	"github.com/kabi175/6502/model"
+	"github.com/kabi175/6502/util"
+)
 
 type sp struct {
 	pointer uint8
+	*util.Observer
 }
 
 func NewSP8() model.SP8 {
 	return &sp{
-		pointer: 0xFF,
+		pointer:  0xFF,
+		Observer: util.NewObserver(),
 	}
 }
 

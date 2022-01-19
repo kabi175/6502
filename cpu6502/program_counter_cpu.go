@@ -1,14 +1,20 @@
 package cpu6502
 
-import "github.com/kabi175/6502/model"
+import (
+	"github.com/kabi175/6502/model"
+	"github.com/kabi175/6502/util"
+)
 
 type pc struct {
 	counter uint16
+
+	*util.Observer
 }
 
 func NewPC() model.PC16 {
 	return &pc{
-		counter: 0,
+		counter:  0,
+		Observer: util.NewObserver(),
 	}
 }
 

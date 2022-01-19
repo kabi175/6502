@@ -1,4 +1,4 @@
-package opcode
+package cpu6502
 
 import (
 	"fmt"
