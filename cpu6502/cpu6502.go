@@ -6,24 +6,18 @@ import (
 )
 
 type CPU6502 struct {
-	Operand       uint8
-	Addr          uint16
-	opcodeBuilder model.OpcodeBuilder
-	PC            model.PC16
-	SP            model.SP8
-	Flag          model.FlagRegister
-	A             model.GP8
-	X             model.GP8
-	Y             model.GP8
-	Bus           model.Bus16
-	deb           model.Debugger
+	Operand uint8
+	Addr    uint16
+	PC      model.PC16
+	SP      model.SP8
+	Flag    model.FlagRegister
+	A       model.GP8
+	X       model.GP8
+	Y       model.GP8
+	Bus     model.Bus16
+	deb     model.Debugger
 
 	*util.Observer
-}
-
-func (c *CPU6502) AttachOpcodeBuilder(builder model.OpcodeBuilder) *CPU6502 {
-	c.opcodeBuilder = builder
-	return c
 }
 
 // Helper function to check the channel for new message or chan close
@@ -48,9 +42,9 @@ func isClosed(close chan bool) bool {
 func (c *CPU6502) Execute(close chan bool) {
 	c.Reset()
 	for !isClosed(close) {
-		opcodeHex := c.Fetch()
-		opcode := c.opcodeBuilder.Build(opcodeHex)
-		opcode.Execute()
+		hexCode := c.Fetch()
+		opcode := NewOpcode(hexCode)
+		opcode.Execute(c)
 		if opcode.IsBreak() || (c != nil && c.deb.IsEnd(c.PC.Get())) {
 			break
 		}

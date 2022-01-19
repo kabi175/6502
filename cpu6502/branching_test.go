@@ -127,6 +127,7 @@ func TestJSR(t *testing.T) {
 	ProgramTest(t, tests)
 }
 
+/*
 func TestRTS(t *testing.T) {
 	tests := []Cputest{
 		{
@@ -135,3 +136,4 @@ func TestRTS(t *testing.T) {
 	}
 	ProgramTest(t, tests)
 }
+*/

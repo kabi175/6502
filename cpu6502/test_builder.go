@@ -35,8 +35,6 @@ func NewCPUBuilder(c *Config) *CPU6502 {
 	bus := bus.NewBus16(c.Prg)
 	deb := debugger.NewDebugger(c.Breaks, c.End)
 	cpu := newCPU(bus, deb)
-	opcodeBuilder := NewOpcodeBuilder(cpu)
-	cpu.AttachOpcodeBuilder(opcodeBuilder)
 	return cpu
 }
 

@@ -14,5 +14,4 @@ jobs:
               with:
                   go-version: ${{ matrix.go }}
 
-            - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic
-            - run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.txt -t ${{ secrets.CODACY_PROJECT_TOKEN }}
+            - run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic && bash <(curl -Ls https://coverage.codacy.com/get.sh) report --force-coverage-parser go -r coverage.txt -t ${{ secrets.CODACY_PROJECT_TOKEN }}

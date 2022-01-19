@@ -84,11 +84,13 @@ type opcode struct {
 	Cycle uint8
 	Mode  ADDRMODE
 	Ins   INSTRUCTION
-	cpu   *CPU6502
 }
 
-func (o *opcode) Execute() uint8 {
-	c := o.cpu
+func (o *opcode) Execute(cpu interface{}) uint8 {
+	c, ok := cpu.(*CPU6502)
+	if !ok {
+		panic("Invalid CPU type")
+	}
 	cycle := o.Cycle
 	switch o.Mode {
 	case ACC:
