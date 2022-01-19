@@ -34,7 +34,8 @@ func NewCPUBuilder(c *Config) *CPU6502 {
 	}
 	bus := bus.NewBus16(c.Prg)
 	deb := debugger.NewDebugger(c.Breaks, c.End)
-	cpu := newCPU(bus, deb)
+	cpu := newCPU(bus)
+	cpu.AddEvent(deb)
 	return cpu
 }
 
@@ -43,7 +44,7 @@ func ProgramTest(t *testing.T, tests []Cputest) {
 		testID := fmt.Sprintf("SubTest_%v", id)
 		t.Run(testID, func(t *testing.T) {
 			cpu := NewCPUBuilder(&Config{Prg: test.Prg, End: test.End})
-			cpu.Execute(make(chan bool))
+			cpu.Execute()
 			assert.Equalf(t, test.A, cpu.A.Get(), "Error A Register")
 			assert.Equalf(t, test.X, cpu.X.Get(), "Error X Register")
 			assert.Equalf(t, test.Y, cpu.Y.Get(), "Error Y Register")

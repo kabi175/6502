@@ -1,40 +1,92 @@
 package debugger
 
 import (
-	"fmt"
+	"sort"
+	"sync"
 
 	"github.com/kabi175/6502/model"
 )
 
-func NewDebugger(bp []uint16, end uint16) model.Debugger {
-	return new(Debugger).setBreakPoints(bp).setEnd(end)
-}
+type DebuggerState uint8
+
+const (
+	Running DebuggerState = iota
+	Paused
+	Stopped
+)
 
 type Debugger struct {
-	bp  map[uint16]bool
-	end uint16
+	c       *sync.Cond
+	PauseAt []uint16
+	StopAt  uint16
+	State   DebuggerState
 }
 
-func (d *Debugger) setBreakPoints(bp []uint16) *Debugger {
-	for _, p := range bp {
-		d.bp[p] = true
+func NewDebugger(bp []uint16, end uint16) *Debugger {
+	sort.Slice(bp, func(i, j int) bool {
+		return bp[i] < bp[j]
+	})
+	return &Debugger{
+		c:       sync.NewCond(&sync.Mutex{}),
+		PauseAt: bp,
+		StopAt:  end,
 	}
-	return d
 }
 
-func (d *Debugger) setEnd(end uint16) *Debugger {
-	d.end = end
-	return d
+func (d *Debugger) doPause(pc uint16) bool {
+	d.c.L.Lock()
+	defer d.c.L.Unlock()
+	index := sort.Search(len(d.PauseAt), func(i int) bool {
+		return d.PauseAt[i] >= pc
+	})
+	if index < len(d.PauseAt) && d.PauseAt[index] == pc {
+		return true
+	}
+	return false
+}
+
+func (d *Debugger) Run(cpu model.CPU, bus model.Bus16) {
+
+	if d.IsEnd(cpu.GetPC()) {
+		cpu.Quit()
+		return
+	}
+
+	if d.doPause(cpu.GetPC()) {
+		d.Pause()
+	}
+
+	d.c.L.Lock()
+	defer d.c.L.Unlock()
+	if d.State == Paused {
+		d.c.Wait()
+	}
+}
+
+func (d *Debugger) Pause() {
+	d.c.L.Lock()
+	defer d.c.L.Unlock()
+	d.State = Paused
+}
+
+func (d *Debugger) Resume() {
+	d.c.L.Lock()
+	defer d.c.L.Unlock()
+	if d.State == Running {
+		return
+	}
+	d.State = Running
+	d.c.Broadcast()
+}
+
+func (d *Debugger) Stop() {
+	d.c.L.Lock()
+	defer d.c.L.Unlock()
+	d.State = Stopped
 }
 
 func (d *Debugger) IsEnd(pc uint16) bool {
-	return d.end == pc
-}
-
-func (d *Debugger) Wait(pc uint16) {
-	if ok := d.bp[pc]; !ok {
-		return
-	}
-	var input string
-	fmt.Scan(input)
+	d.c.L.Lock()
+	defer d.c.L.Unlock()
+	return d.StopAt == pc
 }

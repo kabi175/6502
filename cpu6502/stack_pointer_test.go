@@ -10,7 +10,7 @@ import (
 
 func TestStackPointer(t *testing.T) {
 	bus := bus.NewBus16([]uint8{})
-	cpu := newCPU(bus, nil)
+	cpu := newCPU(bus)
 	t.Run("InitialValue", func(t *testing.T) {
 		assert.Equal(t, uint16(0x00FF), cpu.SP.Get())
 	})

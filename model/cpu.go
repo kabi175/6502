@@ -9,9 +9,12 @@ type PubSub interface {
 
 // An interface for Cpu
 type CPU interface {
-	Execute(chan bool) // Execute method runs opcodes
+	Execute() // Execute method runs opcodes
+	Quit()    // Quit method stops the cpu
+	GetPC() uint16
 
 	PubSub // PubSub interface
+	EventQueue
 }
 
 // General Purpose 8-bit Register Interface

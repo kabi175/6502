@@ -2,23 +2,42 @@ package cpu6502
 
 import (
 	"github.com/kabi175/6502/model"
-	"github.com/kabi175/6502/util"
 )
 
 type CPU6502 struct {
-	Operand uint8
-	Addr    uint16
-	PC      model.PC16
-	SP      model.SP8
-	Flag    model.FlagRegister
-	A       model.GP8
-	X       model.GP8
-	Y       model.GP8
-	Bus     model.Bus16
-	deb     model.Debugger
+	operand uint8
+	addr    uint16
+
+	PC   model.PC16
+	SP   model.SP8
+	Flag model.FlagRegister
+	A    model.GP8
+	X    model.GP8
+	Y    model.GP8
+
+	Bus model.Bus16
 
 	isRunning bool
-	*util.Observer
+	EventQueue
+}
+
+func (c *CPU6502) GetPC() uint16 {
+	return c.PC.Get()
+}
+
+func (c *CPU6502) Subscribe(callback func(model.State)) (func(), error) {
+	c.PC.Subscribe(callback)
+	c.SP.Subscribe(callback)
+	c.Flag.Subscribe(callback)
+
+	c.A.Subscribe(callback)
+	c.X.Subscribe(callback)
+	c.Y.Subscribe(callback)
+	return nil, nil
+}
+
+func (c *CPU6502) Publish(model.State) error {
+	return nil
 }
 
 /*
@@ -29,18 +48,27 @@ type CPU6502 struct {
  -> Execute AddressMode func to get operand
  -> Execute the instruction func with operand
  -> Track no.of cycles that took for execution
+ -> Run External Events i.e. Debugger, State Publishing
 */
-func (c *CPU6502) Execute(close chan bool) {
+func (c *CPU6502) Execute() {
 	c.Reset()
 	c.isRunning = true
 	for c.isRunning {
+
 		hexCode := c.Fetch()
 		opcode := NewOpcode(hexCode)
 		opcode.Execute(c)
-		if opcode.IsBreak() || (c != nil && c.deb.IsEnd(c.PC.Get())) {
-			break
+
+		c.Run(c, c.Bus)
+
+		if opcode.IsBreak() {
+			c.Quit()
 		}
 	}
+}
+
+func (c *CPU6502) Quit() {
+	c.isRunning = false
 }
 
 func (c *CPU6502) Read(add uint16) uint8 {

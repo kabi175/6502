@@ -5,7 +5,7 @@ In this mode, instruction operaties on data on accumulator.
 No operations are needed.
 */
 func (*opcode) ACC(c *CPU6502) uint8 {
-	c.Operand = c.A.Get()
+	c.operand = c.A.Get()
 	// No operations are  needed
 	return 0
 }
@@ -16,7 +16,7 @@ This a 2-byte instruction.This addressing mode have their operand defined
 as next byte to the opcode.
 */
 func (*opcode) IMM(c *CPU6502) uint8 {
-	c.Operand = c.Fetch()
+	c.operand = c.Fetch()
 	return 0
 }
 
@@ -36,8 +36,8 @@ func (*opcode) ZPA(c *CPU6502) uint8 {
 	high := uint8(0x00)
 	low := c.Fetch()
 	addr := LittleEndianAddr(low, high)
-	c.Addr = addr
-	c.Operand = c.Read(addr)
+	c.addr = addr
+	c.operand = c.Read(addr)
 	return 0
 }
 
@@ -54,8 +54,8 @@ addr = low + X
 func (*opcode) ZPX(c *CPU6502) uint8 {
 	low := c.Fetch()
 	addr := (uint16(low) + uint16(c.X.Get())) & 0x00ff
-	c.Addr = addr
-	c.Operand = c.Read(addr)
+	c.addr = addr
+	c.operand = c.Read(addr)
 	return 0
 }
 
@@ -74,8 +74,8 @@ addr = low + Y
 func (*opcode) ZPY(c *CPU6502) uint8 {
 	low := c.Fetch()
 	addr := (uint16(low) + uint16(c.Y.Get())) & 0x00ff
-	c.Addr = addr
-	c.Operand = c.Read(addr)
+	c.addr = addr
+	c.operand = c.Read(addr)
 	return 0
 }
 
@@ -95,8 +95,8 @@ func (*opcode) ABS(c *CPU6502) uint8 {
 	low := c.Fetch()
 	high := c.Fetch()
 	addr := LittleEndianAddr(low, high)
-	c.Addr = addr
-	c.Operand = c.Read(addr)
+	c.addr = addr
+	c.operand = c.Read(addr)
 	return 0
 }
 
@@ -117,8 +117,8 @@ func (*opcode) ABX(c *CPU6502) uint8 {
 	low := c.Fetch()
 	high := c.Fetch()
 	addr := LittleEndianAddr(low, high) + uint16(c.X.Get())
-	c.Addr = addr
-	c.Operand = c.Read(addr)
+	c.addr = addr
+	c.operand = c.Read(addr)
 
 	// Check for page cross
 	if uint16(c.X.Get())+uint16(low) > 0x00ff {
@@ -144,8 +144,8 @@ func (*opcode) ABY(c *CPU6502) uint8 {
 	low := c.Fetch()
 	high := c.Fetch()
 	addr := LittleEndianAddr(low, high) + uint16(c.Y.Get())
-	c.Addr = addr
-	c.Operand = c.Read(addr)
+	c.addr = addr
+	c.operand = c.Read(addr)
 
 	// Check for page cross
 	if uint16(c.Y.Get())+uint16(low) > 0x00ff {
@@ -167,7 +167,7 @@ func (*opcode) IMP(c *CPU6502) uint8 {
 
 // Relative Mode
 func (*opcode) REL(c *CPU6502) uint8 {
-	c.Operand = c.Fetch()
+	c.operand = c.Fetch()
 	return 0
 }
 
@@ -185,8 +185,8 @@ func (*opcode) IDX(c *CPU6502) uint8 {
 	low := c.Read(zpAddr)
 	high := c.Read(zpAddr + 1)
 	targetAddr := LittleEndianAddr(low, high)
-	c.Addr = targetAddr
-	c.Operand = c.Read(targetAddr)
+	c.addr = targetAddr
+	c.operand = c.Read(targetAddr)
 	return 0
 }
 
@@ -202,8 +202,8 @@ func (*opcode) IDY(c *CPU6502) uint8 {
 
 	targetAddr := LittleEndianAddr(low, high) + uint16(c.Y.Get())
 
-	c.Addr = targetAddr
-	c.Operand = c.Read(targetAddr)
+	c.addr = targetAddr
+	c.operand = c.Read(targetAddr)
 
 	return 0
 }
@@ -219,6 +219,6 @@ func (*opcode) IND(c *CPU6502) uint8 {
 	addr := low | high
 	targetLow := c.Read(addr)
 	targetHigh := c.Read(addr + 1)
-	c.Addr = LittleEndianAddr(targetLow, targetHigh)
+	c.addr = LittleEndianAddr(targetLow, targetHigh)
 	return 0
 }

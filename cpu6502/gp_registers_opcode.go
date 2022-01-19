@@ -1,7 +1,7 @@
 package cpu6502
 
 func (o *opcode) CPX(c *CPU6502) uint8 {
-	src := uint16(c.X.Get()) - uint16(c.Operand)
+	src := uint16(c.X.Get()) - uint16(c.operand)
 	c.Flag.Set(CARRY, src < 0x100)
 	c.Flag.Set(SIGN, IsNev(uint8(src)))
 	c.Flag.Set(CARRY, src&0xff == 0)
@@ -9,7 +9,7 @@ func (o *opcode) CPX(c *CPU6502) uint8 {
 }
 
 func (o *opcode) CPY(c *CPU6502) uint8 {
-	src := uint16(c.Y.Get()) - uint16(c.Operand)
+	src := uint16(c.Y.Get()) - uint16(c.operand)
 	c.Flag.Set(CARRY, src < 0x100)
 	c.Flag.Set(SIGN, IsNev(uint8(src)))
 	c.Flag.Set(ZERO, src&0xff == 0)
@@ -56,33 +56,33 @@ func (o *opcode) INY(c *CPU6502) uint8 {
 }
 
 func (o *opcode) LDA(c *CPU6502) uint8 {
-	c.Flag.Set(SIGN, IsNev(c.Operand))
-	c.Flag.Set(ZERO, IsZero(c.Operand))
-	c.A.Set(c.Operand)
+	c.Flag.Set(SIGN, IsNev(c.operand))
+	c.Flag.Set(ZERO, IsZero(c.operand))
+	c.A.Set(c.operand)
 	return 0
 }
 func (o *opcode) LDX(c *CPU6502) uint8 {
-	c.Flag.Set(SIGN, IsNev(c.Operand))
-	c.Flag.Set(ZERO, IsZero(c.Operand))
-	c.X.Set(c.Operand)
+	c.Flag.Set(SIGN, IsNev(c.operand))
+	c.Flag.Set(ZERO, IsZero(c.operand))
+	c.X.Set(c.operand)
 	return 0
 }
 func (o *opcode) LDY(c *CPU6502) uint8 {
-	c.Flag.Set(SIGN, IsNev(c.Operand))
-	c.Flag.Set(ZERO, IsZero(c.Operand))
-	c.Y.Set(c.Operand)
+	c.Flag.Set(SIGN, IsNev(c.operand))
+	c.Flag.Set(ZERO, IsZero(c.operand))
+	c.Y.Set(c.operand)
 	return 0
 }
 func (o *opcode) STA(c *CPU6502) uint8 {
-	c.Write(c.Addr, c.A.Get())
+	c.Write(c.addr, c.A.Get())
 	return 0
 }
 func (o *opcode) STX(c *CPU6502) uint8 {
-	c.Write(c.Addr, c.X.Get())
+	c.Write(c.addr, c.X.Get())
 	return 0
 }
 func (o *opcode) STY(c *CPU6502) uint8 {
-	c.Write(c.Addr, c.Y.Get())
+	c.Write(c.addr, c.Y.Get())
 	return 0
 }
 func (o *opcode) TAX(c *CPU6502) uint8 {
